@@ -1,0 +1,17 @@
+http://localhost:3006/api/v1/users/auth/register-empresa
+
+{
+    "nit": "12345678",
+    "nombre_empresa": "Amazon",
+    "email": "amazon@gmail.com",
+    "cedula": "1130267052",
+    "nombre": "Alfredo Dominguez",
+    "emailUsers": "alfredo@gmail.com",
+    "password": "12345678"
+}
+
+http://localhost:3006/api/v1/users/auth/validate-cedula-register
+
+{
+    "cedula": "1130267052"
+}
