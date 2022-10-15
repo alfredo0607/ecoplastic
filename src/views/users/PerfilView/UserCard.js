@@ -171,7 +171,7 @@ const UserCard = ({ loadingData, userInfo, errorLoading }) => {
       )}
 
       <ImageBackdrop
-        src={`http://localhost:4000/uploads/images/corporativas/${userInfo.userImage}`}
+        src={`http://localhost:3006/uploads/images/corporativas/${userInfo.userImage}`}
         open={openBackdropImg}
         onClose={handleCloseBackdropImg}
         caption={`Imagen de perfil de: ${userInfo.nombre}`}

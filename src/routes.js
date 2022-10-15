@@ -8,6 +8,8 @@ import RecoveryPasswordView from "./views/auth/RecoveryPasswordView";
 import RegisterView from "./views/auth/RegisterView";
 import Cuenta from "./views/cuenta/CuentaView";
 import Dashboard from "./views/Dashboard/Dashboard";
+import ProductDetail from "./views/product/productDetail/ProductDetail";
+import PublicacionesView from "./views/publicaciones/mis publicaciones";
 import RegisterUsersView from "./views/RegisterUsersView";
 import PerfilUsuario from "./views/users/PerfilView";
 import Usuarios from "./views/users/UsuarioView";
@@ -21,6 +23,9 @@ const routes = (isLoggedIn) => [
       { path: "app/operators", element: <Usuarios /> },
       { path: "/operators/:id", element: <PerfilUsuario /> },
       { path: "app/dashboard", element: <Dashboard /> },
+      { path: "app/product/:id", element: <ProductDetail /> },
+      { path: "app/publicaciones", element: <PublicacionesView /> },
+
       //   { path: "/products", element: <ProductListView /> },
       //   { path: "/settings", element: <SettingsView /> },
       //   { path: "/configuraciones", element: <ConfiguracionesView /> },
