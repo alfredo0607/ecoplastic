@@ -25,14 +25,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const InformationDetail = ({ publicacion, recomendation, editorState }) => {
+const InformationDetail = ({
+  publicacion,
+  editorState,
+  rating,
+  imagenes,
+  comentarios,
+  setcomentarios,
+  setrating,
+}) => {
   const classes = useStyles();
   const {
     user: { usuario },
   } = useSelector((state) => state.auth);
 
   const [loading, setLoading] = useState(false);
-  const [rating, setRating] = useState(0);
   const [visibleRating, setVisibleRating] = useState(true);
   const [customAlert, setCustomAlert] = useState({
     type: null,
@@ -47,58 +54,9 @@ const InformationDetail = ({ publicacion, recomendation, editorState }) => {
   const handleOpenNewComment = () => setOpenDialogComent(true);
   const handleCloseNewComment = () => setOpenDialogComent(false);
 
-  /*  const {
-        responsePublication: { titulo },
-    } = publicacion; */
-
   const handleCloseError = () => setCustomAlert({ type: null, message: null });
 
-  const configUseChat = useMemo(
-    () => ({
-      sendMessageConfig: {
-        url: `/publicaciones/agregar_comentario_publicacion/${publicacion.id}`,
-        method: "POST",
-        formatedData: {
-          idUsuario: usuario.idUsuario,
-          esRespuesta: 0,
-        },
-      },
-      loadMessagesConfig: {
-        isPagination: true,
-        url: `publicaciones/obtener_comentarios_publicacion/${publicacion.id}`,
-        method: "GET",
-        fieldNameItems: "rows",
-      },
-      fieldNameMessage: "textoComentario",
-      extendsMessageObject: true,
-      extendsMessageObjectFieldName: "row",
-      disableEnterKey: true,
-    }),
-    [publicacion.id]
-  );
-
-  // const {
-  //   inputChatRef,
-  //   updateItems,
-  //   items,
-  //   sendNewMessage,
-  //   changePage,
-  //   totalItems,
-  // } = useChatMessages(configUseChat);
-
-  // const handleSendComment = async (id) => {
-  //   console.log("Soy un nuevo comentario");
-  //   sendNewMessage();
-  //   setCustomAlert({
-  //     type: "success",
-  //     message: "El comentario fue agregado exitosamente",
-  //   });
-  //   handleCloseNewComment();
-  // };
-
   const handleRating = async (newRating) => {
-    setRating(newRating);
-    console.log(rating);
     const token = getUserToken();
     try {
       setRequestToken(token);
@@ -142,14 +100,18 @@ const InformationDetail = ({ publicacion, recomendation, editorState }) => {
           <Grid item xs={12} sm={9} p={2}>
             <div className={classes.card}>
               <DetailPublication
+                comentarios={comentarios}
                 publicacion={publicacion}
                 editorState={editorState}
+                imagenes={imagenes}
               />
             </div>
           </Grid>
           <Grid item xs={12} sm={3} p={2}>
             <div className={classes.card}>
               <DeatilPublicationData
+                comentarios={comentarios}
+                setcomentarios={setcomentarios}
                 publicacion={publicacion}
                 sigCanvas={sigCanvas}
                 open={openDialogFirm}
@@ -158,11 +120,11 @@ const InformationDetail = ({ publicacion, recomendation, editorState }) => {
                 openDialogComent={openDialogComent}
                 handleOpenNewComment={handleOpenNewComment}
                 handleCloseNewComment={handleCloseNewComment}
-                // handleSendComment={handleSendComment}
                 rating={rating}
+                setrating={setrating}
                 handleRating={handleRating}
                 visibleRating={visibleRating}
-                recomendation={recomendation}
+                setCustomAlert={setCustomAlert}
               />
             </div>
           </Grid>

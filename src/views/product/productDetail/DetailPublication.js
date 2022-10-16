@@ -1,7 +1,9 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React from "react";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-
+import Carousel from "react-material-ui-carousel";
+import { Paper, Button } from "@mui/material";
 import {
   Stack,
   Divider,
@@ -12,9 +14,18 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import ComentariosCard from "./ComentariosCard";
 
-import ReactPlayer from "react-player";
-import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
+function Item(props) {
+  return (
+    <Paper>
+      <img
+        style={{ width: "100%" }}
+        src={`http://localhost:3006/uploads/file_explorer_usuarios/${props.item.nombreServidor}`}
+      />
+    </Paper>
+  );
+}
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -25,11 +36,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DetailPublication = ({ publicacion, editorState }) => {
+const DetailPublication = ({
+  publicacion,
+  editorState,
+  imagenes,
+  comentarios,
+}) => {
   const classes = useStyles();
   const matches = useMediaQuery("(min-width:600px)");
-
-  console.log(publicacion);
 
   return (
     <Stack spacing={2}>
@@ -54,29 +68,39 @@ const DetailPublication = ({ publicacion, editorState }) => {
           Publicado el {publicacion.date} por{" "}
           <Avatar
             alt={publicacion.publicedBy}
-            sx={{ display: "inline-block", marginLeft: 1, marginRight: 1 }}
-            src={`http://localhost:3006/uploads/images/imagenes/usuarios/${publicacion.avatar}`}
+            sx={{ marginLeft: 1, marginRight: 1 }}
+            src={`http://localhost:3006/uploads/images/imagenes_usuarios/${publicacion.avatar}`}
           />{" "}
           {publicacion.publicedBy}
         </Typography>
       </Grid>
-      {/* {editorState && (
-        <Grid>
-          <Editor
-            readOnly
-            toolbarHidden
-            editorState={editorState}
-            // onEditorStateChange={setEditorState}
-            toolbarClassName="toolbarClassName"
-            wrapperClassName="wrapperClassName"
-            editorClassName="editorClassName"
-            editorStyle={{
-              height: "100%",
-              padding: "10px",
-            }}
-          />
-        </Grid>
-      )} */}
+      <Grid>
+        <Typography typography>{publicacion.publicationContain}</Typography>
+
+        {imagenes.length !== 0 && (
+          <Carousel height={500}>
+            {imagenes.map((item, i) => (
+              <Item key={i} item={item} />
+            ))}
+          </Carousel>
+        )}
+      </Grid>
+      <Grid>
+        <Typography marginTop={2} marginBottom={4} fontSize={18} typography>
+          Comentarios
+        </Typography>
+
+        {comentarios.length !== 0 &&
+          comentarios.map((data) => (
+            <ComentariosCard key={data.idcomentarios} data={data} />
+          ))}
+
+        {comentarios.length === 0 && (
+          <Typography marginTop={2} marginBottom={4} fontSize={18} typography>
+            No hay comentario, deja tu primer comentario.
+          </Typography>
+        )}
+      </Grid>
     </Stack>
   );
 };

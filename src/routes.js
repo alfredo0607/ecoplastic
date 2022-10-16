@@ -9,6 +9,7 @@ import RegisterView from "./views/auth/RegisterView";
 import Cuenta from "./views/cuenta/CuentaView";
 import Dashboard from "./views/Dashboard/Dashboard";
 import ProductDetail from "./views/product/productDetail/ProductDetail";
+import GestionPublicacionesView from "./views/publicaciones/gestion de publicaciones/GestionPublicacionesView";
 import PublicacionesView from "./views/publicaciones/mis publicaciones";
 import RegisterUsersView from "./views/RegisterUsersView";
 import PerfilUsuario from "./views/users/PerfilView";
@@ -30,7 +31,10 @@ const routes = (isLoggedIn) => [
       //   { path: "/settings", element: <SettingsView /> },
       //   { path: "/configuraciones", element: <ConfiguracionesView /> },
       //   { path: "/solicitudes", element: <MisSolicitudesScreen /> },
-      //   { path: "/gestion_solicitudes", element: <GestionSolicitudesView /> },
+      {
+        path: "app/gestion_publicaciones",
+        element: <GestionPublicacionesView />,
+      },
       { path: "/", element: <Navigate to="app/dashboard" /> },
       { path: "*", element: <NotFoundView /> },
     ],

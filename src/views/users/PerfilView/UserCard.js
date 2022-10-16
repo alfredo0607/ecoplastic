@@ -125,7 +125,7 @@ const UserCard = ({ loadingData, userInfo, errorLoading }) => {
             {loadingData ? (
               <Skeleton animation="wave" variant="text" width={200} />
             ) : (
-              userInfo.nombre
+              userInfo?.usersDetails.nombre
             )}
           </Typography>
 
@@ -171,7 +171,7 @@ const UserCard = ({ loadingData, userInfo, errorLoading }) => {
       )}
 
       <ImageBackdrop
-        src={`http://localhost:3006/uploads/images/corporativas/${userInfo.userImage}`}
+        src={`http://localhost:3006/uploads/images/imagenes_usuarios/${userInfo?.usersDetails?.userImage}`}
         open={openBackdropImg}
         onClose={handleCloseBackdropImg}
         caption={`Imagen de perfil de: ${userInfo.nombre}`}

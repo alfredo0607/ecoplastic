@@ -31,7 +31,5 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Dashboard() {
-  const classes = useStyles();
-
   return <ProductList />;
 }

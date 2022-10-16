@@ -6,11 +6,10 @@ import makeStyles from "@mui/styles/makeStyles";
 
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
-
-import AdministradorDeContenidos from "./AdministradorDeContenidos";
-import Page from "../../../components/Page";
 import { getUserToken } from "../../../helpers/setGetToken";
 import { fetchRequest, setRequestToken } from "../../../helpers/fetchRequest";
+import Page from "../../../components/Page";
+import AdministradorDeContenidos from "../mis publicaciones/AdministradorDeContenidos";
 import PostCardList from "../../product/PostCardList";
 
 const useStyles = makeStyles((theme) => ({
@@ -22,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PublicacionesView = () => {
+const GestionPublicacionesView = () => {
   const classes = useStyles();
 
   const [publications, setPublication] = useState([]);
@@ -44,9 +43,8 @@ const PublicacionesView = () => {
 
       setRequestToken(token);
       const response = await fetchRequest(
-        `/producto/get_mis_publicacione/${usuario.idUsuario}?page=${page}&limit=${rowsPerPage}&showAll=1`,
-        "POST",
-        filtersAndParams
+        `/producto/get_publicacione_admin/${usuario.idUsuario}/${usuario.empresa.idempresa}?page=${page}&limit=${rowsPerPage}&showAll=1`,
+        "GET"
       );
 
       const { rows, total } = response.data.data;
@@ -143,4 +141,4 @@ const initialFilterValues = {
   tipoPublicacion: null,
 };
 
-export default PublicacionesView;
+export default GestionPublicacionesView;

@@ -226,9 +226,9 @@ export default function TopBar() {
         to={"/app/cuenta"}
         style={{ color: "inherit", textDecoration: "inherit" }}
       >
-        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+        <MenuItem onClick={handleMenuClose}>Perfil</MenuItem>
       </RouterLink>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      {/* <MenuItem onClick={handleMenuClose}>My account</MenuItem> */}
     </Menu>
   );
 
@@ -257,7 +257,7 @@ export default function TopBar() {
         >
           <AccountCircle />
         </IconButton>
-        <p>Profile</p>
+        <p>Perfil</p>
       </MenuItem>
     </Menu>
   );

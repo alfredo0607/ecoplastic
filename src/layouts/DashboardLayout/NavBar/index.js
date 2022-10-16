@@ -198,8 +198,8 @@ const NavBar = () => {
           <Divider />
         </>
 
-        <List>
-          {profileType === "usuario" ? (
+        {usuario?.rol !== "Admin" && (
+          <List>
             <>
               {linksUser.map((item) => (
                 <NavItem
@@ -210,23 +210,40 @@ const NavBar = () => {
                 />
               ))}
             </>
-          ) : (
-            <>
-              {linksAdmins.map((item) => (
-                <div key={item.title}>
-                  <>
-                    <NavItem
-                      href={item.href}
-                      title={item.title}
-                      icon={item.icon}
-                    />
-                    {item.title === "Configuraciones" && <Divider />}
-                  </>
-                </div>
-              ))}
-            </>
-          )}
-        </List>
+          </List>
+        )}
+
+        {usuario?.rol === "Admin" && (
+          <List>
+            {profileType === "usuario" ? (
+              <>
+                {linksUser.map((item) => (
+                  <NavItem
+                    href={item.href}
+                    title={item.title}
+                    icon={item.icon}
+                    key={item.title}
+                  />
+                ))}
+              </>
+            ) : (
+              <>
+                {linksAdmins.map((item) => (
+                  <div key={item.title}>
+                    <>
+                      <NavItem
+                        href={item.href}
+                        title={item.title}
+                        icon={item.icon}
+                      />
+                      {item.title === "Configuraciones" && <Divider />}
+                    </>
+                  </div>
+                ))}
+              </>
+            )}
+          </List>
+        )}
       </Box>
     </Box>
   );

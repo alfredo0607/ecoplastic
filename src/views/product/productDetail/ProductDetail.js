@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import { useSelector } from "react-redux";
@@ -16,10 +17,10 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CloseIcon from "@mui/icons-material/Close";
 import dayjs from "dayjs";
 import es from "date-fns/locale/es";
-import Page from "../../../components/Page";
 import InformationDetail from "./InformationDetail";
 import { fetchRequest, setRequestToken } from "../../../helpers/fetchRequest";
 import { getUserToken } from "../../../helpers/setGetToken";
+import Page from "../../../components/Page";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,13 +52,15 @@ const ProductDetail = () => {
   const { id } = useParams();
 
   const [publication, setPublication] = useState({});
-  const [recomendation, setRecomendation] = useState([]);
   const [editorState, setEditorState] = useState({});
+  const [rating, setrating] = useState(0);
   const [customAlert, setCustomAlert] = useState({
     type: null,
     message: null,
   });
   const [loading, setLoading] = useState(false);
+  const [comentarios, setcomentarios] = useState([]);
+  const [imagenes, setimagenes] = useState([]);
 
   const handleCloseAlert = () => setCustomAlert({ type: null, message: null });
 
@@ -67,66 +70,43 @@ const ProductDetail = () => {
     try {
       setRequestToken(token);
       const response = await fetchRequest(
-        `/publicaciones/obtener_detalle_publicacion/${id}/${usuario.idUsuario}`,
-        "GET",
-        {}
+        `/producto/get__publicacion_detail/${usuario.idUsuario}/${id}`,
+        "GET"
       );
 
-      const { row } = response.data.data;
+      const {
+        responseProduct,
+        responseImg,
+        comentarios,
+        totalComentarios,
+        rating,
+      } = response.data.data;
 
       const publicationStateFormated =
-        row.adminData.estado === 0 ? "No publicado" : "Publicado";
+        responseProduct.isocultar === 1 ? "No publicado" : "Publicado";
 
       const dataFormated = {
-        id: row.id,
-        publicationTitle: row.titulo,
-        publicationContain: row.contenido,
-        date: dayjs(row.fechaCreacion)
+        id: responseProduct.idproductos,
+        publicationTitle: responseProduct.titulo,
+        publicationContain: responseProduct.descripcion,
+        date: dayjs(responseProduct.createdate)
           .locale(es)
           .format("DD [de] MMMM [de] YYYY"),
-        activeCommentaries: row.comentariosActivos,
-        cover: row.cover,
-        featuredContent: row.esDestacado,
-        publicationType: row.tipoPublicacion,
-        colorType: row.colorTipo,
-        publicedBy: row.nombreCreador,
-        avatar: row.imagenCreador,
-        idCreador: row.idCreador,
-        tags: row.tags,
-        video: row.videos,
-        files: row.archivos,
-        voteUser: row.votoUsuario,
+        activeCommentaries: responseProduct.comments,
+        cover: responseProduct.cover,
+        publicationType: responseProduct.categoria,
+        publicedBy: responseProduct.nombre,
+        avatar: responseProduct.userImage,
+        idCreador: responseProduct.idusers,
         publicationState: publicationStateFormated,
-        userConfirm: row.firmaUsuario,
-        idDataAdmin: row.adminData.id,
-        adminDataDate: row.adminData.fechaCreacion,
-        adminDataLastModification: dayjs(row.adminData.ultimaActualizacion)
-          .locale(es)
-          .format("DD [de] MMMM [de] YYYY"),
-        adminDataRating: row.adminData.rating,
-        adminDataComments: row.adminData.totalComentarios,
+        adminDataRating: rating,
+        adminDataComments: totalComentarios,
       };
 
+      setrating(rating);
       setPublication(dataFormated);
-
-      const formatedRecomendations = row.recomendadas.map((row) => ({
-        id: row.id,
-        date: dayjs(row.fechaCreacion)
-          .locale(es)
-          .format("DD [de] MMMM [de] YYYY"),
-        colorType: row.colorTipo,
-        publicationType: row.tipoPublicacion,
-        cover: row.cover,
-        publicationTitle: row.tituloPublicacion,
-      }));
-
-      setRecomendation(formatedRecomendations);
-
-      setEditorState(
-        EditorState.createWithContent(
-          convertFromRaw(dataFormated.publicationContain)
-        )
-      );
+      setcomentarios(comentarios);
+      setimagenes(responseImg);
 
       setLoading(false);
     } catch (error) {
@@ -142,51 +122,17 @@ const ProductDetail = () => {
     }
   };
 
-  // if (Object.keys(publication).length === 0) {
-  //   return (
-  //     <>
-  //       <div>Loading...</div>
-  //     </>
-  //   );
-  // }
+  useEffect(() => {
+    getPublication();
+  }, []);
 
-  const dataFormated = [
-    {
-      id: 1,
-      publicationTitle: "Titulo",
-      publicationContain: "contenido bb",
-      date: dayjs("2022/01/01").locale(es).format("DD [de] MMMM [de] YYYY"),
-      activeCommentaries: true,
-      cover: "",
-      featuredContent: true,
-      publicationType: "",
-      colorType: "",
-      publicedBy: "Alfredo Dominguez",
-      avatar: "",
-      idCreador: 1,
-      tags: "",
-      video: "",
-      files: "",
-      voteUser: "",
-      publicationState: "",
-      userConfirm: "",
-      idDataAdmin: "",
-      adminDataDate: "",
-      adminDataLastModification: dayjs("2022/01/01")
-        .locale(es)
-        .format("DD [de] MMMM [de] YYYY"),
-      adminDataRating: 1,
-      adminDataComments: 1,
-    },
-  ];
-
-  // setEditorState(
-  //   EditorState.createWithContent(
-  //     convertFromRaw("hola como estas")
-  //   )
-  // );
-
-  // console.log(editorState);
+  if (loading && Object.keys(publication).length === 0) {
+    return (
+      <>
+        <div>Loading...</div>
+      </>
+    );
+  }
 
   return (
     <Page className={classes.root} title="Detalles publicacion">
@@ -212,9 +158,13 @@ const ProductDetail = () => {
           </Paper>
 
           <InformationDetail
-            publicacion={dataFormated}
-            recomendation={recomendation}
+            comentarios={comentarios}
+            imagenes={imagenes}
+            rating={rating}
+            setrating={setrating}
+            publicacion={publication}
             editorState={editorState}
+            setcomentarios={setcomentarios}
           />
         </Grid>
       </Grid>

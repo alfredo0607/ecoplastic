@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
+import daysjs from "dayjs";
 import {
   Avatar,
   Box,
@@ -9,11 +10,25 @@ import {
   Divider,
   Grid,
   Typography,
+  Rating,
 } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import GetAppIcon from "@mui/icons-material/GetApp";
 import { Link } from "react-router-dom";
+import es from "dayjs/locale/es";
+
+const labels = {
+  2.5: "Ok",
+  3: "Ok+",
+  3.5: "Bueno",
+  4: "Bueno+",
+  4.5: "Excelente",
+  5: "Excelente+",
+};
+
+const getLabelText = (value) =>
+  `${value} Star${value !== 1 ? "s" : ""}, ${labels[value]}`;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,22 +48,51 @@ const ProductCard = ({ className, product, ...rest }) => {
   const classes = useStyles();
 
   return (
-    <Link to={"/app/product/1"}>
+    <Link to={`/app/product/${product?.idproductos}`}>
       <Card className={clsx(classes.root, className)} {...rest}>
         <CardContent>
           <Box display="flex" justifyContent="center" mb={3}>
-            <Avatar alt="Product" src={product.media} variant="square" />
+            <img
+              style={{ width: "80%" }}
+              alt="Product"
+              src={`http://localhost:3006/${product?.cover}`}
+            />
           </Box>
           <Typography
-            align="center"
+            align="left"
             color="textPrimary"
             gutterBottom
             variant="h4"
           >
-            {product.title}
+            {product.titulo}
           </Typography>
-          <Typography align="center" color="textPrimary" variant="body1">
-            {product.description}
+
+          <Box mb={1}>
+            <Rating
+              style={{
+                marginLeft: "auto",
+                marginRight: "auto",
+                marginTop: 5,
+              }}
+              name="calification"
+              value={product?.rating}
+              precision={0.5}
+              size="medium"
+              max={5}
+              getLabelText={getLabelText}
+            />
+          </Box>
+
+          <Typography
+            sx={{
+              display: "-webkit-box",
+              overflow: "hidden",
+              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: 3,
+            }}
+            variant="body1"
+          >
+            {product.descripcion}
           </Typography>
         </CardContent>
         <Box flexGrow={1} />
@@ -62,7 +106,9 @@ const ProductCard = ({ className, product, ...rest }) => {
                 display="inline"
                 variant="body2"
               >
-                Updated 2hr ago
+                {daysjs(product?.createdate)
+                  .locale(es)
+                  .format("YYYY-MM-DD hh:mm")}
               </Typography>
             </Grid>
             <Grid className={classes.statsItem} item>
@@ -72,7 +118,7 @@ const ProductCard = ({ className, product, ...rest }) => {
                 display="inline"
                 variant="body2"
               >
-                {product.totalDownloads} Downloads
+                {product?.nombre} - {product?.nombre_empresa}
               </Typography>
             </Grid>
           </Grid>
@@ -84,7 +130,7 @@ const ProductCard = ({ className, product, ...rest }) => {
 
 ProductCard.propTypes = {
   className: PropTypes.string,
-  product: PropTypes.object.isRequired,
+  publicacion: PropTypes.any,
 };
 
 export default ProductCard;

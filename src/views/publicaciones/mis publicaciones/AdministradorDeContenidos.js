@@ -4,7 +4,6 @@ import { Typography, Paper, Grid } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import NuevaPublicacion from "./NuevaPublicacion";
 
-
 const useStyles = makeStyles((theme) => ({
   titleText: {
     color:
