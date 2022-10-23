@@ -149,6 +149,7 @@ const DeatilPublicationData = ({
                 marginRight: "auto",
                 marginTop: 7,
               }}
+              readOnly
               name="calification"
               value={rating}
               onChange={(event, newRating) => handleRating(newRating)}

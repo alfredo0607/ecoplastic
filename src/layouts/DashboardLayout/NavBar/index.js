@@ -78,7 +78,7 @@ const linksUser = [
     title: "Mis pedidos",
   },
   {
-    href: "/app/publicaciones",
+    href: "/app/solicitudes",
     icon: FaCommentsDollarIcon,
     title: "Solicitudes de productos",
   },

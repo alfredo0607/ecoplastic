@@ -80,6 +80,7 @@ const ProductCard = ({ className, product, ...rest }) => {
               size="medium"
               max={5}
               getLabelText={getLabelText}
+              readOnly
             />
           </Box>
 

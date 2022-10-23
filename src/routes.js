@@ -1,6 +1,7 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 import NotFoundView from "./components/errors/NotFoundView";
+import ContentDetailsSolicitud from "./components/solicitudes/ContentDetailsSolicitud";
 import DashboardLayout from "./layouts/DashboardLayout";
 import MainLayout from "./layouts/MainLayout";
 import LoginView from "./views/auth/LoginView";
@@ -12,6 +13,7 @@ import ProductDetail from "./views/product/productDetail/ProductDetail";
 import GestionPublicacionesView from "./views/publicaciones/gestion de publicaciones/GestionPublicacionesView";
 import PublicacionesView from "./views/publicaciones/mis publicaciones";
 import RegisterUsersView from "./views/RegisterUsersView";
+import ShowSolicitudes from "./views/solicitudes/ShowSolicitudes";
 import PerfilUsuario from "./views/users/PerfilView";
 import Usuarios from "./views/users/UsuarioView";
 
@@ -26,15 +28,16 @@ const routes = (isLoggedIn) => [
       { path: "app/dashboard", element: <Dashboard /> },
       { path: "app/product/:id", element: <ProductDetail /> },
       { path: "app/publicaciones", element: <PublicacionesView /> },
-
-      //   { path: "/products", element: <ProductListView /> },
-      //   { path: "/settings", element: <SettingsView /> },
-      //   { path: "/configuraciones", element: <ConfiguracionesView /> },
-      //   { path: "/solicitudes", element: <MisSolicitudesScreen /> },
       {
         path: "app/gestion_publicaciones",
         element: <GestionPublicacionesView />,
       },
+      { path: "app/solicitudes", element: <ShowSolicitudes /> },
+      {
+        path: "app/detail_solicitudes/:id/:type",
+        element: <ContentDetailsSolicitud />,
+      },
+
       { path: "/", element: <Navigate to="app/dashboard" /> },
       { path: "*", element: <NotFoundView /> },
     ],

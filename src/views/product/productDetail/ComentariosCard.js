@@ -105,9 +105,9 @@ const ComentariosCard = ({ data }) => {
               marginRight: "auto",
               marginTop: 5,
             }}
+            readOnly
             name="calification"
             value={data.calificacion}
-            // onChange={(event, newRating) => handleRating(newRating)}
             precision={0.5}
             size="medium"
             max={5}
