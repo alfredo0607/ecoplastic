@@ -359,9 +359,9 @@ const filtersReducer = (state, { type, payload }) => {
 };
 
 const optionsTipoEstado = [
-  { title: "EN PROCESO" },
-  { title: "RESUELTA" },
-  { title: "RECHAZADA" },
+  { title: "En revision" },
+  { title: "Aprobada" },
+  { title: "Rechazada" },
 ];
 
 export default HeaderFiltersSolicitudes;

@@ -6,22 +6,24 @@ import { useLocation, useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
 
-import { Box, Typography, Grid, Avatar, Chip, TextField } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Grid,
+  Avatar,
+  Chip,
+  TextField,
+  Button,
+} from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import { Alert, Skeleton } from "@mui/material";
-
-import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
-import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
-import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied";
-import BadgeIcon from "@mui/icons-material/Badge";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import WorkIcon from "@mui/icons-material/Work";
 import { getUserToken } from "../../helpers/setGetToken";
 import { fetchRequest, setRequestToken } from "../../helpers/fetchRequest";
 import ChatContainer from "../chat/ChatContainer";
 import { useChatMessages } from "../../hooks/useChatMessages";
 import CardProduct from "./CardProduct";
 import SyncAltIcon from "@mui/icons-material/SyncAlt";
+import FormPedidos from "../forms/pedidos/FormPedidos";
 
 const useStyles = makeStyles((theme) => ({
   detailsContainer: {
@@ -174,6 +176,9 @@ const ContentDetailsSolicitud = () => {
   const [solicitud, setSolicitud] = useState(null);
   const [loading, setLoading] = useState(true);
   const [messageError, setMessageError] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [openRechazada, setopenRechazada] = useState(false);
+  const [openDetalle, setopenDetalle] = useState(false);
 
   const getInfoSolicitud = async () => {
     setLoading(true);
@@ -205,11 +210,25 @@ const ContentDetailsSolicitud = () => {
     }
   };
 
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleCloseRechazada = () => {
+    setopenRechazada(false);
+  };
+
+  const handleCloseDetalle = () => {
+    setopenDetalle(false);
+  };
+
+  const updateStatusSolicitud = (newStatus) => {
+    setSolicitud({ ...solicitud, estado: newStatus });
+  };
+
   useEffect(() => {
     getInfoSolicitud();
   }, []);
-
-  console.log(solicitud);
 
   return (
     <div className={classes.detailsContainer}>
@@ -250,13 +269,44 @@ const ContentDetailsSolicitud = () => {
                     classes.stateBadgeBase,
                     solicitud.estado === "En revision"
                       ? classes.estadoSolicitudProceso
-                      : solicitud.estado === "RECHAZADA"
+                      : solicitud.estado === "Rechazada"
                       ? classes.estadoSolicitudRechazada
                       : classes.estadoSolicitudResuelta,
                   ].join(" ")}
                 >
                   {solicitud.estado}
                 </Typography>
+              )}
+            </div>
+
+            <div className={classes.statesDetails}>
+              {loading ? (
+                <Skeleton
+                  variant="text"
+                  animation="pulse"
+                  width={70}
+                  height={30}
+                />
+              ) : (
+                solicitud?.estado === "En revision" &&
+                solicitud?.idusers_envia !== usuario.idUsuario && (
+                  <Box>
+                    <Button onClick={() => setOpen(true)}>Aprobar</Button>
+                    <Button onClick={() => setopenRechazada(true)}>
+                      Rechazar
+                    </Button>
+                  </Box>
+                )
+              )}
+            </div>
+
+            <div className={classes.statesDetails}>
+              {solicitud?.estado === "Aprobada" && (
+                <Box>
+                  <Button onClick={() => setopenDetalle(true)}>
+                    Detaller de entrega
+                  </Button>
+                </Box>
               )}
             </div>
           </div>
@@ -405,10 +455,24 @@ const ContentDetailsSolicitud = () => {
           </Box>
         </div>
 
-        <Box mt={2} className={classes.row}>
-          <ChatContainer configUseChat={configUseChat} />
-        </Box>
+        {solicitud?.estado !== "Rechazada" && (
+          <Box className={classes.row}>
+            <ChatContainer configUseChat={configUseChat} />
+          </Box>
+        )}
       </Box>
+
+      <FormPedidos
+        open={open}
+        handleClose={handleClose}
+        id={id}
+        updateStatusSolicitud={updateStatusSolicitud}
+        openRechazada={openRechazada}
+        handleCloseRechazada={handleCloseRechazada}
+        handleCloseDetalle={handleCloseDetalle}
+        openDetalle={openDetalle}
+        solicitud={solicitud}
+      />
     </div>
   );
 };

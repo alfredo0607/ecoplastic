@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate, useLocation } from "react-router-dom";
 import { Paper, Box, Typography } from "@mui/material";
 import HeaderSolicitudes from "../../components/solicitudes/HeaderSolicitudes";
 import { getUserToken } from "../../helpers/setGetToken";
@@ -67,14 +66,18 @@ const ShowSolicitudes = ({ type = "user" }) => {
       setRequestToken(token);
 
       const ruta =
-        type === "mis" ? "get_mis_solicitud" : "get_mis_solicitud_productos";
+        type === "mis"
+          ? "get_mis_solicitud"
+          : type === "pro"
+          ? "get_mis_solicitud_productos"
+          : "get_admin_solicitud";
+
+      const idParams =
+        type === "admin" ? usuario?.empresa?.idempresa : usuario?.idUsuario;
 
       const {
         data: { data },
-      } = await fetchRequest(
-        `/solicitudes/${ruta}/${usuario?.idUsuario}`,
-        "GET"
-      );
+      } = await fetchRequest(`/solicitudes/${ruta}/${idParams}`, "GET");
 
       setSolicitudes(data.request);
       setTotalSolicitudes(data.request.length);

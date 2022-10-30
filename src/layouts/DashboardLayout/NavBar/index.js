@@ -36,12 +36,6 @@ const linksAdmins = [
     moduleName: "link_usuarios_menu",
   },
   {
-    href: "/app/clientes",
-    icon: FaRegBuildingIcon,
-    title: "Clientes",
-    moduleName: "link_clientes_menu",
-  },
-  {
     href: "/app/gestion_publicaciones",
     icon: FaRegNewspaperIcon,
     title: "Publicaciones",
@@ -54,7 +48,7 @@ const linksAdmins = [
     moduleName: "link_solicitudes_menu",
   },
   {
-    href: "/app/estadisticas",
+    href: "/app/gestionar_estadisticas",
     icon: FaServerIcon,
     title: "Estadisticas",
     moduleName: "link_estadisticas_menu",

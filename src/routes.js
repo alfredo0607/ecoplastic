@@ -9,6 +9,7 @@ import RecoveryPasswordView from "./views/auth/RecoveryPasswordView";
 import RegisterView from "./views/auth/RegisterView";
 import Cuenta from "./views/cuenta/CuentaView";
 import Dashboard from "./views/Dashboard/Dashboard";
+import Estadisticas from "./views/estadisticas/Estadisticas";
 import ProductDetail from "./views/product/productDetail/ProductDetail";
 import GestionPublicacionesView from "./views/publicaciones/gestion de publicaciones/GestionPublicacionesView";
 import PublicacionesView from "./views/publicaciones/mis publicaciones";
@@ -32,15 +33,32 @@ const routes = (isLoggedIn) => [
         path: "app/gestion_publicaciones",
         element: <GestionPublicacionesView />,
       },
-      { path: "app/solicitudes", element: <ShowSolicitudes /> },
+      { path: "app/solicitudes", element: <ShowSolicitudes type={"pro"} /> },
       {
         path: "app/mis_solicitudes",
         element: <ShowSolicitudes type={"mis"} />,
       },
+
+      {
+        path: "app/gestion_solicitudes",
+        element: <ShowSolicitudes type={"admin"} />,
+      },
+
       {
         path: "app/detail_solicitudes/:id/:type",
         element: <ContentDetailsSolicitud />,
       },
+
+      {
+        path: "app/estadisticas",
+        element: <Estadisticas type="user" />,
+      },
+
+      {
+        path: "app/gestionar_estadisticas",
+        element: <Estadisticas type="admin" />,
+      },
+
       { path: "/", element: <Navigate to="app/dashboard" /> },
       { path: "*", element: <NotFoundView /> },
     ],

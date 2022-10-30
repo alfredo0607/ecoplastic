@@ -104,7 +104,7 @@ const CardSolicitud = ({ data }) => {
                   classes.estado,
                   data.estado === "En revision"
                     ? classes.estadoSolicitudProceso
-                    : data.estado === "RECHAZADA"
+                    : data.estado === "Rechazada"
                     ? classes.estadoSolicitudRechazada
                     : classes.estadoSolicitudResuelta,
                 ].join(" ")}

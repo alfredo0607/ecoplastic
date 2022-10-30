@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { Fragment, useCallback, useContext, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import {
   SwipeableDrawer,
@@ -49,9 +49,9 @@ export default function Notifications() {
     notificacionesRequestTotal,
     notificationsObjectRequest,
     total,
-  } = React.useContext(NotificationsContext);
+  } = useContext(NotificationsContext);
 
-  const [state, setState] = React.useState({ right: false });
+  const [state, setState] = useState({ right: false });
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -73,7 +73,7 @@ export default function Notifications() {
     );
   };
 
-  const notificationListPqr = React.useCallback(
+  const notificationListPqr = useCallback(
     () =>
       notificationsObject.map((item) => (
         <Notification
@@ -94,10 +94,10 @@ export default function Notifications() {
           type={"notificationPqr"}
         />
       )),
-    [notificationsObject, toggleDrawer]
+    [notificationsObject]
   );
 
-  const notificationListRequest = React.useCallback(
+  const notificationListRequest = useCallback(
     () =>
       notificationsObjectRequest.map((item) => (
         <Notification
@@ -118,13 +118,13 @@ export default function Notifications() {
           type={"notificationRequest"}
         />
       )),
-    [notificationsObject, toggleDrawer]
+    [notificationsObjectRequest]
   );
 
   return (
     <div>
       {["right"].map((anchor) => (
-        <React.Fragment key={anchor}>
+        <Fragment key={anchor}>
           <IconButton
             onClick={toggleDrawer(anchor, true)}
             color="inherit"
@@ -213,7 +213,7 @@ export default function Notifications() {
               </div>
             </div>
           </SwipeableDrawer>
-        </React.Fragment>
+        </Fragment>
       ))}
     </div>
   );
