@@ -16,7 +16,6 @@ import {
 import makeStyles from "@mui/styles/makeStyles";
 import { Alert } from "@mui/material";
 import { Outlet } from "react-router-dom";
-// import { NotificationsProvider } from "src/context/NotificationsContext";
 // import TopBar from "./TopBar";
 // import { getUserToken } from "src/helpers/setGetToken";
 // import { fetchRequest, setRequestToken } from "src/helpers/fetchRequest";
@@ -34,6 +33,7 @@ import LoadingForms from "../../components/LoadingForms";
 import TopBar from "./TopBar";
 import FormUbicacionEmpresa from "../../views/users/PerfilView/form/FormUbicacionEmpresa";
 import RegisterModel from "../../views/RegisterModel";
+import { NotificationsProvider } from "../../context/NotificationsContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -136,79 +136,79 @@ const DashboardLayout = () => {
     setResponseMessages({ type: null, message: null });
 
   return (
-    // <NotificationsProvider>
-    <>
-      <div className={classes.root}>
-        <TopBar />
-        <div className={classes.toolbar} />
-        <div className={classes.contentContainer}>
-          <Outlet />
+    <NotificationsProvider>
+      <>
+        <div className={classes.root}>
+          <TopBar />
+          <div className={classes.toolbar} />
+          <div className={classes.contentContainer}>
+            <Outlet />
+          </div>
         </div>
-      </div>
 
-      {usuario?.passTemporal && (
-        <>
-          <Dialog
-            fullWidth
-            maxWidth="xs"
-            open={open}
-            onClose={handleClose}
-            disableEscapeKeyDown
-            aria-labelledby="max-width-dialog-title"
-          >
-            {loading && <LoadingForms />}
-            <form onSubmit={handleSubmit(handleChangePassword)}>
-              <DialogTitle id="max-width-dialog-title">
-                Actualizar contraseña
-              </DialogTitle>
+        {usuario?.passTemporal && (
+          <>
+            <Dialog
+              fullWidth
+              maxWidth="xs"
+              open={open}
+              onClose={handleClose}
+              disableEscapeKeyDown
+              aria-labelledby="max-width-dialog-title"
+            >
+              {loading && <LoadingForms />}
+              <form onSubmit={handleSubmit(handleChangePassword)}>
+                <DialogTitle id="max-width-dialog-title">
+                  Actualizar contraseña
+                </DialogTitle>
+                <DialogContent>
+                  <FormTextRequired />
+
+                  <FormPassword register={register} errors={errors} />
+                </DialogContent>
+                <DialogActions>
+                  <Button color="primary" type="submit">
+                    Guardar
+                  </Button>
+                </DialogActions>
+              </form>
+            </Dialog>
+          </>
+        )}
+
+        {usuario.lastLogin === null && usuario.rol === "Admin" && (
+          <>
+            <Dialog
+              fullScreen
+              fullWidth
+              maxWidth="md"
+              open={openMemorandos}
+              onClose={handleCloseMemorandos}
+              disableEscapeKeyDown
+              aria-labelledby="dialog-title-memorandos-usuarios"
+            >
+              {loading && <LoadingForms />}
               <DialogContent>
-                <FormTextRequired />
-
-                <FormPassword register={register} errors={errors} />
+                <RegisterModel setOpenMemorandos={setOpenMemorandos} />
               </DialogContent>
-              <DialogActions>
-                <Button color="primary" type="submit">
-                  Guardar
-                </Button>
-              </DialogActions>
-            </form>
-          </Dialog>
-        </>
-      )}
+            </Dialog>
+          </>
+        )}
 
-      {usuario.lastLogin === null && usuario.rol === "Admin" && (
-        <>
-          <Dialog
-            fullScreen
-            fullWidth
-            maxWidth="md"
-            open={openMemorandos}
-            onClose={handleCloseMemorandos}
-            disableEscapeKeyDown
-            aria-labelledby="dialog-title-memorandos-usuarios"
-          >
-            {loading && <LoadingForms />}
-            <DialogContent>
-              <RegisterModel setOpenMemorandos={setOpenMemorandos} />
-            </DialogContent>
-          </Dialog>
-        </>
-      )}
-
-      <Snackbar
-        open={!!responseMessages.message}
-        autoHideDuration={5000}
-        onClose={handleCloseSnackbar}
-      >
-        <Alert
+        <Snackbar
+          open={!!responseMessages.message}
+          autoHideDuration={5000}
           onClose={handleCloseSnackbar}
-          severity={responseMessages.type || "success"}
         >
-          {responseMessages.message || ""}
-        </Alert>
-      </Snackbar>
-    </>
-    // </NotificationsProvider>
+          <Alert
+            onClose={handleCloseSnackbar}
+            severity={responseMessages.type || "success"}
+          >
+            {responseMessages.message || ""}
+          </Alert>
+        </Snackbar>
+      </>
+    </NotificationsProvider>
   );
 };
 

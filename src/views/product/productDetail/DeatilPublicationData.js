@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, forwardRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import {
   Stack,
@@ -25,6 +25,7 @@ import { useForm } from "react-hook-form";
 import { fetchRequest, setRequestToken } from "../../../helpers/fetchRequest";
 import { getUserToken } from "../../../helpers/setGetToken";
 import { useSelector } from "react-redux";
+import FormSolicitud from "../../../components/solicitudes/FormSolicitud";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -50,10 +51,6 @@ const labels = {
 
 const getLabelText = (value) =>
   `${value} Star${value !== 1 ? "s" : ""}, ${labels[value]}`;
-
-const Transition = forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
 const schema = yup.object().shape({
   comentario: yup.string().required("El comentario es requerida"),
@@ -170,7 +167,7 @@ const DeatilPublicationData = ({
             variant="contained"
             color="primary"
             sx={{ marginTop: 1 }}
-            onClick={handleOpenNewComment}
+            onClick={handleOpen}
           >
             <AddCommentIcon sx={{ marginRight: 1 }} /> Enviar solicitud
           </Button>
@@ -203,18 +200,11 @@ const DeatilPublicationData = ({
         </Box>
       </Stack>
 
-      <Dialog
+      <FormSolicitud
         open={open}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-slide-title"
-      >
-        <DialogTitle id="alert-dialog-slide-title">
-          {"Firma sobre la almohadilla y confirma tu participacion"}
-        </DialogTitle>
-        <DialogContent>HOLA MUNDO</DialogContent>
-      </Dialog>
+        handleClose={handleClose}
+        idPublicacion={publicacion.id}
+      />
 
       <Dialog
         open={openDialogComent}

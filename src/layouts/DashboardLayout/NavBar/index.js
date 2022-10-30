@@ -73,9 +73,9 @@ const linksUser = [
     title: "Mi Cuenta",
   },
   {
-    href: "/app/pedidos",
+    href: "/app/mis_solicitudes",
     icon: FaBoxIcon,
-    title: "Mis pedidos",
+    title: "Mis solicitudes",
   },
   {
     href: "/app/solicitudes",

@@ -34,10 +34,13 @@ const routes = (isLoggedIn) => [
       },
       { path: "app/solicitudes", element: <ShowSolicitudes /> },
       {
+        path: "app/mis_solicitudes",
+        element: <ShowSolicitudes type={"mis"} />,
+      },
+      {
         path: "app/detail_solicitudes/:id/:type",
         element: <ContentDetailsSolicitud />,
       },
-
       { path: "/", element: <Navigate to="app/dashboard" /> },
       { path: "*", element: <NotFoundView /> },
     ],

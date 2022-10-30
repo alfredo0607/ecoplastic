@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useRef, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
@@ -18,6 +19,9 @@ import WorkIcon from "@mui/icons-material/Work";
 import { getUserToken } from "../../helpers/setGetToken";
 import { fetchRequest, setRequestToken } from "../../helpers/fetchRequest";
 import ChatContainer from "../chat/ChatContainer";
+import { useChatMessages } from "../../hooks/useChatMessages";
+import CardProduct from "./CardProduct";
+import SyncAltIcon from "@mui/icons-material/SyncAlt";
 
 const useStyles = makeStyles((theme) => ({
   detailsContainer: {
@@ -122,12 +126,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ContentDetailsSolicitud = ({ type, actualUser }) => {
+const ContentDetailsSolicitud = () => {
   const classes = useStyles();
-  const isMounted = useRef(true);
-  const { search } = useLocation();
 
-  const queryParams = new URLSearchParams(search);
+  const { type, id } = useParams();
 
   const {
     user: { usuario },
@@ -136,16 +138,14 @@ const ContentDetailsSolicitud = ({ type, actualUser }) => {
   const configUseChat = useMemo(
     () => ({
       sendMessageConfig: {
-        url: `/solicitudes/nuevo_mensaje_solicitud/${queryParams.get("SID")}`,
+        url: `/solicitudes/nuevo_mensaje/${usuario.idUsuario}/${id}`,
         method: "POST",
         formatedData: {
           idUsuarioEnvia: usuario.idUsuario,
         },
       },
       loadMessagesConfig: {
-        url: `/solicitudes/obtener_mensajes_solicitud/${queryParams.get(
-          "SID"
-        )}`,
+        url: `/solicitudes/obtener_mensajes_solicitud/${id}`,
         fieldNameItems: "messages",
         formatResponse: (messages) =>
           messages.map((item) => ({
@@ -168,21 +168,12 @@ const ContentDetailsSolicitud = ({ type, actualUser }) => {
     [usuario]
   );
 
-  /* const { inputChatRef, sendNewMessage, items, scrollInfiniteData } = useChatMessages(configUseChat); */
-
-  const [miniMenuOpen, setMiniMenuOpen] = useState({
-    open: false,
-    buttonActive: "",
-    title: "",
-    renderComponent: () => null,
-  });
-
-  const [userWithoutPermissions, setuserWithoutPermissions] = useState(false);
+  const { inputChatRef, sendNewMessage, items, scrollInfiniteData } =
+    useChatMessages(configUseChat);
 
   const [solicitud, setSolicitud] = useState(null);
   const [loading, setLoading] = useState(true);
   const [messageError, setMessageError] = useState(null);
-  let imageusuario;
 
   const getInfoSolicitud = async () => {
     setLoading(true);
@@ -192,40 +183,12 @@ const ContentDetailsSolicitud = ({ type, actualUser }) => {
       setRequestToken(token);
 
       const resp = await fetchRequest(
-        `/solicitudes/obtener_solicitud/${queryParams.get("SID")}/${type}`
+        `/solicitudes/get_solicitud_detalle/${id}/${type}`
       );
 
-      const idUserEnvia = resp.data.data.solicitud.fk_usuarioEnvia;
-      const sender = parseInt(idUserEnvia) === parseInt(actualUser);
+      setSolicitud(resp.data.data.solicitud);
 
-      if (type === "admin") {
-        const usuariosGestion = resp.data.data.solicitud.usuariosGestion.map(
-          (usuario) => usuario.userID
-        );
-        /*  ||
-          permisos.filter(permiso => permiso.nombreModulo === 'sistema_super_admin')[0] */
-        if (usuariosGestion.includes(parseInt(actualUser))) {
-          if (isMounted.current) {
-            setSolicitud(resp.data.data.solicitud);
-            setLoading(false);
-          }
-        } else {
-          if (isMounted.current) {
-            setuserWithoutPermissions(true);
-          }
-        }
-      } else {
-        if (parseInt(actualUser) === parseInt(idUserEnvia)) {
-          if (isMounted.current) {
-            setSolicitud(resp.data.data.solicitud);
-            setLoading(false);
-          }
-        } else {
-          if (isMounted.current) {
-            setuserWithoutPermissions(true);
-          }
-        }
-      }
+      setLoading(false);
     } catch (error) {
       let msgError = "";
 
@@ -238,24 +201,15 @@ const ContentDetailsSolicitud = ({ type, actualUser }) => {
       }
 
       setMessageError(msgError);
+      setLoading(false);
     }
   };
 
-  //   useEffect(() => {
-  //     if (isMounted.current) {
-  //       if (parseInt(actualUser) === parseInt(queryParams.get("UID"))) {
-  //         getInfoSolicitud();
-  //       } else {
-  //         setuserWithoutPermissions(true);
-  //       }
-  //     }
-  //   }, [search, actualUser]);
+  useEffect(() => {
+    getInfoSolicitud();
+  }, []);
 
-  //   useEffect(() => {
-  //     return () => {
-  //       isMounted.current = false;
-  //     };
-  //   }, []);
+  console.log(solicitud);
 
   return (
     <div className={classes.detailsContainer}>
@@ -277,9 +231,10 @@ const ContentDetailsSolicitud = ({ type, actualUser }) => {
               />
             ) : (
               <Typography variant="h2">
-                Detalles de la solicitud #{queryParams.get("SID")}
+                Detalles de la solicitud #{id}
               </Typography>
             )}
+
             <div className={classes.statesDetails}>
               {loading ? (
                 <Skeleton
@@ -293,36 +248,14 @@ const ContentDetailsSolicitud = ({ type, actualUser }) => {
                   variant="body2"
                   className={[
                     classes.stateBadgeBase,
-                    solicitud.estadoSolicitud === "EN PROCESO"
+                    solicitud.estado === "En revision"
                       ? classes.estadoSolicitudProceso
-                      : solicitud.estadoSolicitud === "RECHAZADA"
+                      : solicitud.estado === "RECHAZADA"
                       ? classes.estadoSolicitudRechazada
                       : classes.estadoSolicitudResuelta,
                   ].join(" ")}
                 >
-                  {solicitud.estadoSolicitud}
-                </Typography>
-              )}
-              {loading ? (
-                <Skeleton
-                  style={{ marginLeft: 10 }}
-                  variant="text"
-                  animation="pulse"
-                  width={70}
-                  height={30}
-                />
-              ) : (
-                <Typography
-                  variant="body2"
-                  className={classes.stateBadgeBase}
-                  style={{
-                    backgroundColor: `#${solicitud.colorTipoSolicitud}`,
-                    // color: getTextColorForBackground(
-                    //   solicitud.colorTipoSolicitud
-                    // ),
-                  }}
-                >
-                  {solicitud.textoTipoSolicitud}
+                  {solicitud.estado}
                 </Typography>
               )}
             </div>
@@ -334,84 +267,13 @@ const ContentDetailsSolicitud = ({ type, actualUser }) => {
             ) : (
               <>
                 <Typography variant="caption">
-                  {dayjs(solicitud.fechaCreacion)
+                  {dayjs(solicitud.createDate)
                     .locale(es)
                     .format("DD [de] MMMM [del] YYYY")}
                 </Typography>
-                {solicitud.fechaCierre && (
-                  <Typography variant="caption">
-                    &nbsp;-{" "}
-                    {dayjs(solicitud.fechaCierre)
-                      .locale(es)
-                      .format("DD [de] MMMM [del] YYYY")}
-                  </Typography>
-                )}
               </>
             )}
           </div>
-
-          {type === "admin" && !loading && (
-            <Grid item xs={12} style={{ marginTop: 5 }}>
-              <div className={classes.containersUserAndForm}>
-                <Typography variant="h6">Información del usuario</Typography>
-
-                <div className={classes.userInfo}>
-                  {loading ? (
-                    <Skeleton variant="circular" width={90} height={90} />
-                  ) : (
-                    <Avatar
-                      src={`http://localhost:4000/uploads/images/imagenes_usuarios/${solicitud.usuario[0].userImage}`}
-                      style={{ width: 90, height: 90 }}
-                    />
-                  )}
-
-                  <div style={{ marginLeft: 15 }}>
-                    {loading ? (
-                      <>
-                        <Skeleton
-                          variant="text"
-                          animation="pulse"
-                          width={250}
-                        />
-                        <Skeleton
-                          variant="text"
-                          animation="pulse"
-                          width={250}
-                        />
-                        <Skeleton
-                          variant="text"
-                          animation="pulse"
-                          width={250}
-                        />
-                      </>
-                    ) : (
-                      <>
-                        {solicitud.usuario.map((usuario) => (
-                          <Chip
-                            key={String(usuario.nombre)}
-                            icon={<AccountCircleIcon />}
-                            size="medium"
-                            // variant="outlined"
-                            label={usuario.nombre}
-                          />
-                        ))}
-                        <Typography variant="body1">cargo:</Typography>
-                        {solicitud.usuario.map((usuario) => (
-                          <Chip
-                            key={String(usuario.nombre)}
-                            icon={<WorkIcon />}
-                            size="medium"
-                            variant="outlined"
-                            label={usuario.cargoLaboral}
-                          />
-                        ))}
-                      </>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </Grid>
-          )}
 
           <div className={classes.asunto}>
             {loading ? (
@@ -421,102 +283,126 @@ const ContentDetailsSolicitud = ({ type, actualUser }) => {
                 <Skeleton variant="text" animation="pulse" width="100%" />
               </>
             ) : (
-              <Typography>
-                <b>Descripción: </b>
-                {solicitud.descripcion}
-              </Typography>
+              <Typography>{solicitud.mensaje}</Typography>
             )}
           </div>
 
-          <Grid container item xs={12} spacing={2}>
-            {type === "admin" && (
-              <Grid item xs={12} md={6}>
-                <Typography variant="h6">
-                  Usuarios gestionando la solicitud:{" "}
-                </Typography>
-                {loading ? (
-                  <Box display="flex" alignItems="center">
-                    <Skeleton
-                      style={{ marginRight: 10 }}
-                      variant="text"
-                      animation="pulse"
-                      width={70}
-                      height={35}
-                    />
-                    <Skeleton
-                      style={{ marginRight: 10 }}
-                      variant="text"
-                      animation="pulse"
-                      width={70}
-                      height={35}
-                    />
-                    <Skeleton
-                      style={{ marginRight: 10 }}
-                      variant="text"
-                      animation="pulse"
-                      width={70}
-                      height={35}
-                    />
-                  </Box>
-                ) : (
-                  <>
-                    {solicitud.usuariosGestion.map((usuario) => (
-                      <Chip
-                        key={String(usuario.userID)}
-                        icon={<VerifiedUserIcon />}
-                        size="small"
-                        variant="outlined"
-                        label={usuario.nombre}
-                      />
-                    ))}
-                  </>
-                )}
-              </Grid>
-            )}
+          <Typography variant="h4">
+            {" "}
+            {solicitud?.idusers_envia === usuario.idUsuario
+              ? "Información del operario"
+              : "Información de solicitante"}
+          </Typography>
+          {!loading && (
+            <Grid item xs={12} style={{ marginTop: 5 }}>
+              {solicitud?.idusers_envia === usuario.idUsuario && (
+                <div className={classes.userInfo}>
+                  <div style={{ marginTop: 2 }}>
+                    {loading ? (
+                      <>
+                        <Skeleton
+                          variant="text"
+                          animation="pulse"
+                          width={250}
+                        />
+                      </>
+                    ) : (
+                      <>
+                        {solicitud.userGestiona &&
+                          solicitud.userGestiona.map((usuario) => (
+                            <Chip
+                              key={String(usuario.nombre)}
+                              icon={
+                                <Avatar
+                                  src={`http://localhost:3006/uploads/images/imagenes_usuarios/${solicitud.userGestiona[0].userImage}`}
+                                  style={{ width: 30, height: 30 }}
+                                />
+                              }
+                              size="medium"
+                              // variant="outlined"
+                              label={
+                                usuario.nombre + " - " + usuario.nombre_empresa
+                              }
+                            />
+                          ))}
+                      </>
+                    )}
+                  </div>
+                </div>
+              )}
 
-            <Grid item xs={12} md={type === "admin" ? 6 : 12}>
-              <Typography variant="h6">
-                Areas encargadas de la solicitud:{" "}
-              </Typography>
-              {loading ? (
-                <Box display="flex" alignItems="center">
-                  <Skeleton
-                    style={{ marginRight: 10 }}
-                    variant="text"
-                    animation="pulse"
-                    width={70}
-                    height={35}
-                  />
-                  <Skeleton
-                    style={{ marginRight: 10 }}
-                    variant="text"
-                    animation="pulse"
-                    width={70}
-                    height={35}
-                  />
-                  <Skeleton
-                    style={{ marginRight: 10 }}
-                    variant="text"
-                    animation="pulse"
-                    width={70}
-                    height={35}
-                  />
-                </Box>
-              ) : (
-                <>
-                  {solicitud.areas.map((area) => (
-                    <Chip
-                      key={String(area.idArea)}
-                      icon={<SupervisedUserCircleIcon />}
-                      size="small"
-                      variant="outlined"
-                      label={area.nombreArea}
-                    />
-                  ))}
-                </>
+              {solicitud?.idusers_envia !== usuario.idUsuario && (
+                <div className={classes.userInfo}>
+                  <div style={{ marginTop: "4px" }}>
+                    {loading ? (
+                      <>
+                        <Skeleton
+                          variant="text"
+                          animation="pulse"
+                          width={250}
+                        />
+                      </>
+                    ) : (
+                      <>
+                        {solicitud.userEnvia &&
+                          solicitud.userEnvia.map((usuario) => (
+                            <Chip
+                              key={String(usuario.nombre)}
+                              icon={
+                                <Avatar
+                                  src={`http://localhost:3006/uploads/images/imagenes_usuarios/${solicitud.userEnvia[0].userImage}`}
+                                  style={{ width: 30, height: 30 }}
+                                />
+                              }
+                              size="medium"
+                              // variant="outlined"
+                              label={
+                                usuario.nombre + " - " + usuario.nombre_empresa
+                              }
+                            />
+                          ))}
+                      </>
+                    )}
+                  </div>
+                </div>
               )}
             </Grid>
-          </Grid>
+          )}
+
+          <Typography marginTop={2} marginBottom={2} variant="h2">
+            Productos a intercambiar
+          </Typography>
+          <Box margin={2} display="flex" alignContent={"center"}>
+            <Grid
+              container
+              rowSpacing={1}
+              columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+            >
+              <Grid item xs={5}>
+                {solicitud?.productoSolicitud?.length !== 0 &&
+                  solicitud?.productoSolicitud.map((data) => (
+                    <CardProduct key={data.cover} data={data} />
+                  ))}
+              </Grid>
+              <Grid
+                item
+                xs={2}
+                width={"100%"}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <SyncAltIcon sx={{ fontSize: 60 }} />
+              </Grid>
+              <Grid item xs={5}>
+                {solicitud?.productoIntercambio?.length !== 0 &&
+                  solicitud?.productoIntercambio.map((data) => (
+                    <CardProduct key={data.cover} data={data} />
+                  ))}
+              </Grid>
+            </Grid>
+          </Box>
         </div>
 
         <Box mt={2} className={classes.row}>

@@ -30,6 +30,7 @@ import MoreIcon from "@mui/icons-material/MoreVert";
 import NavBar from "./NavBar";
 import { setDarkMode } from "../../redux/actions/authActions";
 import Logo from "../../components/Logo";
+import Notifications from "./notifications/Notifications";
 
 const drawerWidth = 256;
 
@@ -244,7 +245,7 @@ export default function TopBar() {
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-        {/* <Notifications /> */}
+        <Notifications />
         <p>Notificaciones</p>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
@@ -306,7 +307,7 @@ export default function TopBar() {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            {/* <Notifications /> */}
+            <Notifications />
 
             <IconButton
               edge="end"
