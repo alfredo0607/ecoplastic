@@ -14,7 +14,6 @@ import {
   Alert,
   Grid,
   DialogContentText,
-  Text,
 } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import LoadingForms from "../../LoadingForms";
@@ -81,6 +80,7 @@ export default function FormPedidos({
   handleCloseDetalle,
   openDetalle,
   solicitud,
+  updateSolicitudAprobada,
 }) {
   const classes = useStyles();
 
@@ -105,6 +105,9 @@ export default function FormPedidos({
         ...newData,
       });
 
+      console.log(data);
+
+      updateSolicitudAprobada(data.pedido);
       updateStatusSolicitud(data.status);
       handleClose();
       setMessageResponse({ type: "success", message: data.message });
@@ -154,6 +157,8 @@ export default function FormPedidos({
       setSendingForm(false);
     }
   };
+
+  console.log(solicitud);
 
   const {
     user: { usuario },

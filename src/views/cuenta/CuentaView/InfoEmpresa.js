@@ -28,6 +28,7 @@ import LoadingForms from "../../../components/LoadingForms";
 import useFileUpload from "../../../hooks/useFileUpload.js";
 import {
   updateBusinessDetails,
+  updateEmpresaImage,
   updateUserImage,
   updateUsersDetails,
 } from "../../../redux/actions/authActions";
@@ -107,7 +108,7 @@ const InfoEmpresa = ({ className, business, setExcelMessages, ...rest }) => {
       formData,
       (data) => {
         console.log(data.nombreArchivo);
-        dispatch(updateUserImage(data.nombreArchivo));
+        dispatch(updateEmpresaImage(data.nombreArchivo));
       }
     );
 

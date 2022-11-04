@@ -9,7 +9,6 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import DescriptionIcon from "@mui/icons-material/Description";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import RegistrarUsuario from "./gestion/RegistrarUsuario";

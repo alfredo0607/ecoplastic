@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { Fragment, useCallback, useContext, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import {
@@ -22,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "10px 15px",
   },
   containerList: {
-    height: "385px",
+    height: "550px",
     overflowY: "auto",
   },
   containerNoNotifications: {
@@ -43,13 +44,8 @@ const useStyles = makeStyles((theme) => ({
 export default function Notifications() {
   const classes = useStyles();
 
-  const {
-    notificationsObject,
-    totalNotificaciones,
-    notificacionesRequestTotal,
-    notificationsObjectRequest,
-    total,
-  } = useContext(NotificationsContext);
+  const { notificationsObject, total, updateNumNotification } =
+    useContext(NotificationsContext);
 
   const [state, setState] = useState({ right: false });
 
@@ -73,7 +69,7 @@ export default function Notifications() {
     );
   };
 
-  const notificationListPqr = useCallback(
+  const notificationList = useCallback(
     () =>
       notificationsObject.map((item) => (
         <Notification
@@ -92,33 +88,10 @@ export default function Notifications() {
           updateStateNotification={updateStateNotification}
           notificationsObject={notificationsObject}
           type={"notificationPqr"}
+          updateNumNotification={updateNumNotification}
         />
       )),
     [notificationsObject]
-  );
-
-  const notificationListRequest = useCallback(
-    () =>
-      notificationsObjectRequest.map((item) => (
-        <Notification
-          key={String(item.idNotificacion)}
-          idNotificacion={item.idNotificacion}
-          iconAvatar={item.iconBadge}
-          avatar={item.avatar}
-          notificationDate={item.fechaNotificacion}
-          userName={item.userName}
-          urlTo={item.referenciaLink}
-          notificationState={item.estadoNotificacion}
-          notificationType={item.typeNotification}
-          badgeText={item.badgeText}
-          middleText={item.middleContent}
-          setState={setState}
-          updateStateNotification={updateStateNotification}
-          notificationsObject={notificationsObjectRequest}
-          type={"notificationRequest"}
-        />
-      )),
-    [notificationsObjectRequest]
   );
 
   return (
@@ -172,37 +145,10 @@ export default function Notifications() {
                 <Divider />
               </Box>
 
-              <Box mb={1}>
-                <Typography variant="h6">Notificaciones de PQRS</Typography>
-              </Box>
-
               <div className={classes.containerList}>
-                {totalNotificaciones > 0 && notificationListPqr()}
+                {notificationsObject.length > 0 && notificationList()}
 
-                {totalNotificaciones === 0 && (
-                  <div className={classes.containerNoNotifications}>
-                    <Typography variant="h3" color="inherit">
-                      No tienes notificaciones
-                    </Typography>
-                    <NotificationsIcon fontSize="inherit" color="inherit" />
-                  </div>
-                )}
-              </div>
-
-              <Box mt={1} mb={1}>
-                <Divider />
-              </Box>
-
-              <Box mb={1}>
-                <Typography variant="h6">
-                  Notificaciones de solicitudes
-                </Typography>
-              </Box>
-
-              <div className={classes.containerList}>
-                {notificacionesRequestTotal > 0 && notificationListRequest()}
-
-                {notificacionesRequestTotal === 0 && (
+                {notificationsObject.length === 0 && (
                   <div className={classes.containerNoNotifications}>
                     <Typography variant="h3" color="inherit">
                       No tienes notificaciones

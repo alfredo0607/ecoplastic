@@ -1,10 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { createContext, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import NotesIcon from "@mui/icons-material/Notes";
 import CancelIcon from "@mui/icons-material/Cancel";
 import TelegramIcon from "@mui/icons-material/Telegram";
-import PushPinIcon from "@mui/icons-material/PushPin";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import MessageIcon from "@mui/icons-material/Message";
+import CommentIcon from "@mui/icons-material/Comment";
 import { useSocket } from "../hooks/useSocket";
 import { fetchRequest, setRequestToken } from "../helpers/fetchRequest";
 import { getUserToken } from "../helpers/setGetToken";
@@ -25,29 +26,18 @@ export const NotificationsProvider = ({ children }) => {
   /* Estado general del provider */
   const [loadingNotificaciones, setLoadingNotificaciones] = useState(false);
   const [total, setTotal] = useState(0);
-  const [totalNotificaciones, setTotalNotificaciones] = useState(0);
-  const [notificacionesPqr, setNotificacionesPqr] = useState([]);
-  const [notificacionesRequest, setNotificacionesRequest] = useState([]);
-  const [notificacionesRequestTotal, setNotificacionesRequestTotal] = useState(
-    []
-  );
+  const [notificaciones, setNotificaciones] = useState([]);
   const [error, setError] = useState(null);
-
   const notificationsObject = useMemo(
-    () => responseToNotificationObject(notificacionesPqr),
-    [notificacionesPqr]
-  );
-
-  const notificationsObjectRequest = useMemo(
-    () => responseToNotificationObject(notificacionesRequest),
-    [notificacionesRequest]
+    () => responseToNotificationObject(notificaciones),
+    [notificaciones]
   );
 
   const getNotificaciones = async () => {
     setLoadingNotificaciones(true);
 
     try {
-      const url = `/users/obtener_notificaciones_usuario/${usuario?.idUsuario}?page=0&limit=10`;
+      const url = `/notificaciones/get_notificaciones_user/${usuario?.idUsuario}`;
 
       const token = getUserToken();
       setRequestToken(token);
@@ -55,23 +45,10 @@ export const NotificationsProvider = ({ children }) => {
       const {
         data: { data },
       } = await fetchRequest(url);
-      const {
-        total,
-        totalPqr,
-        notificationsPqr,
-        totalRequest,
-        notificationsRequest,
-      } = data;
+      const { total, notifications } = data;
 
       setTotal(total);
-
-      // PQR
-      setTotalNotificaciones(totalPqr);
-      setNotificacionesPqr(notificationsPqr);
-
-      // SOLICITUDES
-      setNotificacionesRequestTotal(totalRequest);
-      setNotificacionesRequest(notificationsRequest);
+      setNotificaciones(notifications);
     } catch (error) {
       let msgError = "";
 
@@ -87,9 +64,15 @@ export const NotificationsProvider = ({ children }) => {
     }
   };
 
+  const updateNumNotification = async () => {
+    if (total > 0) {
+      setTotal(total - 1);
+    }
+  };
+
   useEffect(() => {
     const callbackNuevaNotificacion = (data) => {
-      setNotificacionesPqr((prevState) => [data.notifications, ...prevState]);
+      setNotificaciones((prevState) => [data.notifications, ...prevState]);
       setTotal(data.totalNotifications);
     };
 
@@ -115,16 +98,10 @@ export const NotificationsProvider = ({ children }) => {
       value={{
         online,
         socket,
-
         total,
-
         notificationsObject,
-        totalNotificaciones,
-
-        notificationsObjectRequest,
-        notificacionesRequestTotal,
-
         loadingNotificaciones,
+        updateNumNotification,
         error,
       }}
     >
@@ -155,62 +132,43 @@ const getTextContentNotification = (item) => {
         text: item.tipoSolicitud,
         background: item.fondoTipoSolicitud,
       },
-      middleContent: "envio una nueva solicitud de tipo",
+      middleContent: "envio una nueva solicitud",
     };
   }
 
-  if (item.type === "mensajes_notas") {
+  if (item.type === "nueva_mensaje_solicitud") {
     textContentObject = {
-      iconBadge: NotesIcon,
+      iconBadge: MessageIcon,
       userName: item.nombreEnvia,
-      typeNotification: `Nota de solicitud #${item.idReferencia}`,
+      typeNotification: `solicitud #${item.idReferencia}`,
       middleContent: "te envio un nuevo mensaje en",
     };
   }
 
-  // PQR
-
-  if (item.type === "nueva_pqr") {
+  if (item.type === "nueva_aprobar_solicitud") {
     textContentObject = {
-      iconBadge: TelegramIcon,
+      iconBadge: CheckCircleIcon,
       userName: item.nombreEnvia,
-      typeNotification: "",
-      middleContent: "envio una nueva PQR",
+      typeNotification: `solicitud #${item.idReferencia}`,
+      middleContent: "felicidades aprobamos tu",
     };
   }
 
-  if (item.type === "rechazo_pqr") {
+  if (item.type === "nueva_rechazar_solicitud") {
     textContentObject = {
       iconBadge: CancelIcon,
-      typeNotification: "",
-      middleContent: `Su PQR se encuentra rechazada por el area ${item.nombreArea}`,
+      userName: item.nombreEnvia,
+      typeNotification: `solicitud #${item.idReferencia}`,
+      middleContent: "lo sentimos rechazamos tu",
     };
   }
 
-  if (item.type === "respondida_pqr") {
+  if (item.type === "nueva_comentario") {
     textContentObject = {
-      iconBadge: TelegramIcon,
+      iconBadge: CommentIcon,
       userName: item.nombreEnvia,
-      typeNotification: "",
-      middleContent: `Su PQR fue respondida por el área ${item.nombreArea}.`,
-    };
-  }
-
-  if (item.type === "fijada_pqr") {
-    textContentObject = {
-      iconBadge: PushPinIcon,
-      userName: item.nombreEnvia,
-      typeNotification: "",
-      middleContent: `Su PQR fue fijada por el area ${item.nombreArea}.`,
-    };
-  }
-
-  if (item.type === "expirar_pqr") {
-    textContentObject = {
-      iconBadge: AccessTimeIcon,
-      userName: item.nombreEnvia,
-      typeNotification: "",
-      middleContent: `La PQR está a punto de expirar.`,
+      typeNotification: `nuevo comentario`,
+      middleContent: "realizo un",
     };
   }
 

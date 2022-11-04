@@ -8,12 +8,12 @@ import {
   Alert,
   IconButton,
   Card,
+  Typography,
 } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import { Pagination, Skeleton } from "@mui/material";
 import Page from "../../../components/Page";
 import ProductCard from "./ProductCard";
-import data from "./data";
 import Carrusel from "../../Dashboard/publicaciones/Carrusel";
 import { getUserToken } from "../../../helpers/setGetToken";
 import { fetchRequest, setRequestToken } from "../../../helpers/fetchRequest";
@@ -29,6 +29,13 @@ const useStyles = makeStyles((theme) => ({
   },
   productCard: {
     height: "100%",
+  },
+
+  titleText: {
+    color:
+      theme.palette.mode === "light"
+        ? "rgba(0, 0, 0, 0.7)"
+        : "rgba(255, 255, 255, 0.9)",
   },
 }));
 
@@ -96,6 +103,12 @@ const ProductList = () => {
         {!loading && <Carrusel />}
 
         <Box mt={3}>
+          <Box m={3}>
+            <Typography className={classes.titleText} variant="h1">
+              Productos destacados
+            </Typography>
+          </Box>
+
           <Grid container spacing={3}>
             {!loading &&
               publicacion.length !== 0 &&

@@ -187,6 +187,7 @@ export default function TopBar() {
 
   const {
     user,
+    business,
     user: { opciones },
   } = useSelector((state) => state.auth);
 
@@ -318,10 +319,10 @@ export default function TopBar() {
               color="inherit"
               size="large"
             >
-              {user?.usuario?.empresa?.imageUrl ? (
+              {business?.imageUrl ? (
                 <Avatar
                   className={classes.avatarB}
-                  src={`http://localhost:3006/uploads/images/corporativas/${user?.usuario?.empresa?.imageUrl}`}
+                  src={`http://localhost:3006/uploads/images/corporativas/${business.imageUrl}`}
                 />
               ) : (
                 <AccountCircle />

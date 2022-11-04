@@ -2,8 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import daysjs from "dayjs";
+import PersonIcon from "@mui/icons-material/Person";
 import {
-  Avatar,
   Box,
   Card,
   CardContent,
@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import GetAppIcon from "@mui/icons-material/GetApp";
 import { Link } from "react-router-dom";
 import es from "dayjs/locale/es";
 
@@ -113,7 +112,8 @@ const ProductCard = ({ className, product, ...rest }) => {
               </Typography>
             </Grid>
             <Grid className={classes.statsItem} item>
-              <GetAppIcon className={classes.statsIcon} color="action" />
+              <PersonIcon className={classes.statsIcon} color="action" />
+
               <Typography
                 color="textSecondary"
                 display="inline"

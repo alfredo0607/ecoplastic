@@ -1,20 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useRef, useMemo } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { useLocation, useParams } from "react-router-dom";
-
+import { useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
-
-import {
-  Box,
-  Typography,
-  Grid,
-  Avatar,
-  Chip,
-  TextField,
-  Button,
-} from "@mui/material";
+import { Box, Typography, Grid, Avatar, Chip, Button } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import { Alert, Skeleton } from "@mui/material";
 import { getUserToken } from "../../helpers/setGetToken";
@@ -126,6 +116,13 @@ const useStyles = makeStyles((theme) => ({
   row: {
     flexBasis: "50%",
   },
+
+  titleText: {
+    color:
+      theme.palette.mode === "light"
+        ? "rgba(0, 0, 0, 0.7)"
+        : "rgba(255, 255, 255, 0.9)",
+  },
 }));
 
 const ContentDetailsSolicitud = () => {
@@ -170,8 +167,7 @@ const ContentDetailsSolicitud = () => {
     [usuario]
   );
 
-  const { inputChatRef, sendNewMessage, items, scrollInfiniteData } =
-    useChatMessages(configUseChat);
+  useChatMessages(configUseChat);
 
   const [solicitud, setSolicitud] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -226,6 +222,10 @@ const ContentDetailsSolicitud = () => {
     setSolicitud({ ...solicitud, estado: newStatus });
   };
 
+  const updateSolicitudAprobada = async (data) => {
+    setSolicitud({ ...solicitud, data });
+  };
+
   useEffect(() => {
     getInfoSolicitud();
   }, []);
@@ -249,7 +249,7 @@ const ContentDetailsSolicitud = () => {
                 height={25}
               />
             ) : (
-              <Typography variant="h2">
+              <Typography className={classes.titleText} variant="h2">
                 Detalles de la solicitud #{id}
               </Typography>
             )}
@@ -333,11 +333,13 @@ const ContentDetailsSolicitud = () => {
                 <Skeleton variant="text" animation="pulse" width="100%" />
               </>
             ) : (
-              <Typography>{solicitud.mensaje}</Typography>
+              <Typography className={classes.titleText}>
+                {solicitud.mensaje}
+              </Typography>
             )}
           </div>
 
-          <Typography variant="h4">
+          <Typography className={classes.titleText} variant="h4">
             {" "}
             {solicitud?.idusers_envia === usuario.idUsuario
               ? "Información del operario"
@@ -419,7 +421,12 @@ const ContentDetailsSolicitud = () => {
             </Grid>
           )}
 
-          <Typography marginTop={2} marginBottom={2} variant="h2">
+          <Typography
+            className={classes.titleText}
+            marginTop={2}
+            marginBottom={2}
+            variant="h2"
+          >
             Productos a intercambiar
           </Typography>
           <Box margin={2} display="flex" alignContent={"center"}>
@@ -472,6 +479,7 @@ const ContentDetailsSolicitud = () => {
         handleCloseDetalle={handleCloseDetalle}
         openDetalle={openDetalle}
         solicitud={solicitud}
+        updateSolicitudAprobada={updateSolicitudAprobada}
       />
     </div>
   );

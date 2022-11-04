@@ -88,6 +88,11 @@ export const updateUserImage = (fileName) => ({
   payload: fileName,
 });
 
+export const updateEmpresaImage = (fileName) => ({
+  type: userTypes.updateEmpresaImage,
+  payload: fileName,
+});
+
 export const getUsersDetails = (data) => async (dispatch) => {
   try {
     const response = await fetchRequest(

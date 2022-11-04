@@ -1,21 +1,24 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React from "react";
 import Carousel from "react-material-ui-carousel";
-import { Paper, Button } from "@mui/material";
+import { Paper } from "@mui/material";
 
 export default function Carrusel() {
   var items = [
     {
-      image:
-        "https://http2.mlstatic.com/D_NQ_802550-MLA51839578360_102022-OO.webp",
+      image: "/static/images/8112046.jpg",
     },
     {
-      image:
-        "https://http2.mlstatic.com/D_NQ_768463-MLA51738006590_092022-OO.webp",
+      image: "/static/images/8112091.jpg",
+    },
+
+    {
+      image: "/static/images/8111993.jpg",
     },
   ];
 
   return (
-    <Carousel height={300}>
+    <Carousel height={450}>
       {items.map((item, i) => (
         <Item key={i} item={item} />
       ))}
@@ -25,8 +28,13 @@ export default function Carrusel() {
 
 function Item(props) {
   return (
-    <Paper>
-      <img src={props.item.image} />
+    <Paper style={{ width: "100%" }}>
+      <img
+        style={{
+          width: "100%",
+        }}
+        src={props.item.image}
+      />
     </Paper>
   );
 }

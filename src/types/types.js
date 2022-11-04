@@ -21,4 +21,5 @@ export const userTypes = {
 
   getBusinesUsers: "[USER BASIC] get details business",
   updateDetailBusines: "[USER BASIC] update details business",
+  updateEmpresaImage: "[USER BASIC] update image business",
 };

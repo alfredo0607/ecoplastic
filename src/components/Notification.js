@@ -7,6 +7,8 @@ import { Badge, Avatar, Typography } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import hexToRgbColor from "../helpers/hexToRgbColor";
 import getTextColorForBackground from "../helpers/getTextColorForBackground";
+import { fetchRequest, setRequestToken } from "../helpers/fetchRequest";
+import { getUserToken } from "../helpers/setGetToken";
 
 const useStyles = makeStyles((theme) => {
   const colorCoverted = hexToRgbColor(theme.palette.primary.main);
@@ -83,20 +85,29 @@ const Notification = ({
   updateStateNotification,
   notificationsObject,
   type,
+  updateNumNotification,
 }) => {
   const nagivate = useNavigate();
   const classes = useStyles();
 
-  const handleClickNotification = () => {
+  const handleClickNotification = async () => {
+    updateStateNotification(notificationsObject, idNotificacion);
+
+    await updateNumNotification();
+
     nagivate(`..${urlTo}`);
     setState({ right: false });
 
-    if (type === "notificationPqr") {
-      updateStateNotification(notificationsObject, idNotificacion);
-    }
+    try {
+      const url = `/notificaciones/update_notificaciones_usuario/${idNotificacion}`;
 
-    if (type === "notificationRequest") {
-      updateStateNotification(notificationsObject, idNotificacion);
+      const token = getUserToken();
+      setRequestToken(token);
+
+      await fetchRequest(url, "PUT");
+    } catch (error) {
+      console.log(error);
+      return;
     }
   };
 
@@ -119,7 +130,7 @@ const Notification = ({
           }
         >
           <Avatar
-            src={`http://localhost:4000/uploads/images/imagenes_usuarios/${avatar}`}
+            src={`http://localhost:3006/uploads/images/imagenes_usuarios/${avatar}`}
             className={classes.avatarNotification}
           />
         </Badge>

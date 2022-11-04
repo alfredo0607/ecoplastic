@@ -97,6 +97,15 @@ export const authReducer = (state = initialState, { type, payload }) => {
         },
       };
 
+    case userTypes.updateEmpresaImage:
+      return {
+        ...state,
+        business: {
+          ...state.business,
+          imageUrl: payload,
+        },
+      };
+
     case userTypes.setDarkMode:
       return {
         ...state,
