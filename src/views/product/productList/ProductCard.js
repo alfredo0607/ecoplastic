@@ -54,7 +54,7 @@ const ProductCard = ({ className, product, ...rest }) => {
             <img
               style={{ width: "80%" }}
               alt="Product"
-              src={`http://localhost:3006/${product?.cover}`}
+              src={`https://ecoplastic.herokuapp.com/${product?.cover}`}
             />
           </Box>
           <Typography

@@ -132,7 +132,7 @@ const NavBar = () => {
         <Avatar
           className={classes.avatar}
           component={RouterLink}
-          src={`http://localhost:3006/uploads/images/imagenes_usuarios/${usuario.imagenUsuario}`}
+          src={`https://ecoplastic.herokuapp.com/uploads/images/imagenes_usuarios/${usuario.imagenUsuario}`}
           to="/app/cuenta"
         />
         <Typography className={classes.name} color="textSecondary" variant="h5">

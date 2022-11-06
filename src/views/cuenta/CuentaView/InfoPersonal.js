@@ -184,7 +184,7 @@ const InfoPersonal = ({ className, userDetail, setExcelMessages, ...rest }) => {
               <Box alignItems="center" display="flex" flexDirection="column">
                 <Avatar
                   className={classes.avatar}
-                  src={`http://localhost:3006/uploads/images/imagenes_usuarios/${user.usuario.imagenUsuario}`}
+                  src={`https://ecoplastic.herokuapp.com/uploads/images/imagenes_usuarios/${user.usuario.imagenUsuario}`}
                   // src={user.usuario.nombre}
                 />
                 <Typography

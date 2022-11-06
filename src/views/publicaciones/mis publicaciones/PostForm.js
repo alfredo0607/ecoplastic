@@ -193,7 +193,7 @@ function PostForm({
                     alignItems="center"
                   >
                     <img
-                      src={`http://localhost:3006/${coverImage}`}
+                      src={`https://ecoplastic.herokuapp.com/${coverImage}`}
                       alt="preview"
                     ></img>
                   </Box>

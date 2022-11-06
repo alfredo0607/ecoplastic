@@ -229,7 +229,7 @@ function PublicationCardAdmin(props) {
               <Avatar
                 aria-label="recipe"
                 style={{ marginBottom: matches ? "10px" : "" }}
-                src={`http://localhost:3006/uploads/images/imagenes_usuarios/${props.publication.avatar}`}
+                src={`https://ecoplastic.herokuapp.com/uploads/images/imagenes_usuarios/${props.publication.avatar}`}
               />
             }
             action={

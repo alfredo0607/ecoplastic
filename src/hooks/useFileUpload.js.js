@@ -15,7 +15,7 @@ const useFileUpload = () => {
   const uploadFiles = async (url, filesData, cb = null) => {
     try {
       const resp = await axios({
-        url: "http://localhost:3006/api/v1/" + url,
+        url: "https://ecoplastic.herokuapp.com/api/v1/" + url,
         method: "POST",
         data: filesData,
         headers: {

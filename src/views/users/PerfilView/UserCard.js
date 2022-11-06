@@ -112,7 +112,7 @@ const UserCard = ({ loadingData, userInfo, errorLoading }) => {
           <div className={classes.containerFlipImages}>
             <Avatar
               alt={userInfo.nombre}
-              src={`http://localhost:3006/uploads/images/imagenes_usuarios/${userInfo?.usersDetails.userImage}`}
+              src={`https://ecoplastic.herokuapp.com/uploads/images/imagenes_usuarios/${userInfo?.usersDetails.userImage}`}
               className={classes.avatar}
               variant="circular"
               onClick={handleOpenBackdropImg}
@@ -171,7 +171,7 @@ const UserCard = ({ loadingData, userInfo, errorLoading }) => {
       )}
 
       <ImageBackdrop
-        src={`http://localhost:3006/uploads/images/imagenes_usuarios/${userInfo?.usersDetails?.userImage}`}
+        src={`https://ecoplastic.herokuapp.com/uploads/images/imagenes_usuarios/${userInfo?.usersDetails?.userImage}`}
         open={openBackdropImg}
         onClose={handleCloseBackdropImg}
         caption={`Imagen de perfil de: ${userInfo.nombre}`}

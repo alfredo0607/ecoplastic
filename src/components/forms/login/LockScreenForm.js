@@ -91,7 +91,7 @@ const LockScreenForm = ({ setLockScreen, dataUser }) => {
       <Box mb={1} display="flex" justifyContent="center">
         <Avatar
           alt={dataUser.firstName}
-          src={`http://localhost:3006/uploads/images/imagenes_usuarios/${dataUser.avatar}`}
+          src={`https://ecoplastic.herokuapp.com/uploads/images/imagenes_usuarios/${dataUser.avatar}`}
           className={classes.avatar}
         >
           <PersonRoundedIcon className={classes.icon} />

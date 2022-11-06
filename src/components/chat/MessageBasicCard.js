@@ -136,7 +136,7 @@ const MessageBasicCard = ({
       {side === "left" && position === 1 && (
         <Tooltip title={senderName}>
           <Avatar
-            src={`http://localhost:4000/uploads/images/imagenes_usuarios/${avatarURL}`}
+            src={`https://ecoplastic.herokuapp.com/uploads/images/imagenes_usuarios/${avatarURL}`}
             alt={`Imagen de usuario de: ${senderName}`}
             className={classes.avatar}
           />

@@ -321,7 +321,7 @@ export default function TopBar() {
               {business?.imageUrl ? (
                 <Avatar
                   className={classes.avatarB}
-                  src={`http://localhost:3006/uploads/images/corporativas/${business.imageUrl}`}
+                  src={`https://ecoplastic.herokuapp.com/uploads/images/corporativas/${business.imageUrl}`}
                 />
               ) : (
                 <AccountCircle />

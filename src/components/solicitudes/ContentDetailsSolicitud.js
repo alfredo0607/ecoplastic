@@ -366,7 +366,7 @@ const ContentDetailsSolicitud = () => {
                               key={String(usuario.nombre)}
                               icon={
                                 <Avatar
-                                  src={`http://localhost:3006/uploads/images/imagenes_usuarios/${solicitud.userGestiona[0].userImage}`}
+                                  src={`https://ecoplastic.herokuapp.com/uploads/images/imagenes_usuarios/${solicitud.userGestiona[0].userImage}`}
                                   style={{ width: 30, height: 30 }}
                                 />
                               }
@@ -402,7 +402,7 @@ const ContentDetailsSolicitud = () => {
                               key={String(usuario.nombre)}
                               icon={
                                 <Avatar
-                                  src={`http://localhost:3006/uploads/images/imagenes_usuarios/${solicitud.userEnvia[0].userImage}`}
+                                  src={`https://ecoplastic.herokuapp.com/uploads/images/imagenes_usuarios/${solicitud.userEnvia[0].userImage}`}
                                   style={{ width: 30, height: 30 }}
                                 />
                               }

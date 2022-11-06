@@ -19,7 +19,7 @@ export const NotificationsProvider = ({ children }) => {
 
   /* Hook para conectarse al servidor de sockets */
   const [socket, online] = useSocket(
-    "http://localhost:3006",
+    "https://ecoplastic.herokuapp.com",
     usuario?.idUsuario
   );
 

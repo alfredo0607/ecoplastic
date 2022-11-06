@@ -15,7 +15,7 @@ export default function CardProduct({ data }) {
           component="img"
           alt="green iguana"
           height="140"
-          image={`http://localhost:3006/${data?.cover}`}
+          image={`https://ecoplastic.herokuapp.com/${data?.cover}`}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">

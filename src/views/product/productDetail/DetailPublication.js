@@ -19,7 +19,7 @@ function Item(props) {
     <Paper>
       <img
         style={{ width: "100%" }}
-        src={`http://localhost:3006/uploads/file_explorer_usuarios/${props.item.nombreServidor}`}
+        src={`https://ecoplastic.herokuapp.com/uploads/file_explorer_usuarios/${props.item.nombreServidor}`}
       />
     </Paper>
   );
@@ -46,7 +46,7 @@ const DetailPublication = ({
         <CardMedia
           component="img"
           height="300"
-          image={`http://localhost:3006/${publicacion.cover}`}
+          image={`https://ecoplastic.herokuapp.com/${publicacion.cover}`}
           alt={publicacion.publicationTitle}
           sx={{ borderRadius: "5px" }}
         />
@@ -64,7 +64,7 @@ const DetailPublication = ({
           <Avatar
             alt={publicacion.publicedBy}
             sx={{ marginLeft: 1, marginRight: 1 }}
-            src={`http://localhost:3006/uploads/images/imagenes_usuarios/${publicacion.avatar}`}
+            src={`https://ecoplastic.herokuapp.com/uploads/images/imagenes_usuarios/${publicacion.avatar}`}
           />{" "}
           {publicacion.publicedBy}
         </Typography>

@@ -130,7 +130,7 @@ const Notification = ({
           }
         >
           <Avatar
-            src={`http://localhost:3006/uploads/images/imagenes_usuarios/${avatar}`}
+            src={`https://ecoplastic.herokuapp.com/uploads/images/imagenes_usuarios/${avatar}`}
             className={classes.avatarNotification}
           />
         </Badge>

@@ -51,7 +51,7 @@ const LatestProducts = ({ className, publication, ...rest }) => {
                 <img
                   alt="Product"
                   className={classes.image}
-                  src={`http://localhost:3006/${product?.cover}`}
+                  src={`https://ecoplastic.herokuapp.com/${product?.cover}`}
                 />
               </ListItemAvatar>
               <ListItemText

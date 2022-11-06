@@ -155,7 +155,7 @@ const InfoEmpresa = ({ className, business, setExcelMessages, ...rest }) => {
               <Box alignItems="center" display="flex" flexDirection="column">
                 <Avatar
                   className={classes.avatar}
-                  src={`http://localhost:3006/uploads/images/corporativas/${business.imageUrl}`}
+                  src={`https://ecoplastic.herokuapp.com/uploads/images/corporativas/${business.imageUrl}`}
                   // src={user.usuario.nombre}
                 />
                 <Typography

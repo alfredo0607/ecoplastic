@@ -87,7 +87,7 @@ const ComentariosCard = ({ data }) => {
             <Avatar
               src={
                 data.userImage
-                  ? `http://localhost:3006/uploads/images/imagenes_usuarios/${data.userImage}`
+                  ? `https://ecoplastic.herokuapp.com/uploads/images/imagenes_usuarios/${data.userImage}`
                   : "/broken-image.jpg"
               }
             />
