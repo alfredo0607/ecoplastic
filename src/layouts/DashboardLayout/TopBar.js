@@ -24,9 +24,6 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MoreIcon from "@mui/icons-material/MoreVert";
-
-// import Notifications from "./Notifications";
-
 import NavBar from "./NavBar";
 import { setDarkMode } from "../../redux/actions/authActions";
 import Logo from "../../components/Logo";
