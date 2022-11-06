@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-
 import { Grid, Container } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
-
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
 import { getUserToken } from "../../../helpers/setGetToken";
@@ -96,13 +94,6 @@ const GestionPublicacionesView = () => {
   useEffect(() => {
     getPublications();
   }, [page, rowsPerPage, filtersAndParams]);
-
-  //   useEffect(() => {
-  //     window.scrollTo({
-  //       top: 0,
-  //       behavior: "smooth",
-  //     });
-  //   }, [page]);
 
   return (
     <>

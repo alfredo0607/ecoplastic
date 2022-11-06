@@ -1,5 +1,4 @@
 import React from "react";
-
 import { Typography, Paper, Grid } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import NuevaPublicacion from "./NuevaPublicacion";
@@ -37,6 +36,7 @@ function AdministradorDeContenidos(props) {
             addPublication={props.addPublication}
             formSettings={props.formSettings}
             updateFormSettings={props.updateFormSettings}
+            getPublications={props.getPublications}
           />
         </Grid>
       </Grid>

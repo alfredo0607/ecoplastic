@@ -44,26 +44,27 @@ const LatestProducts = ({ className, publication, ...rest }) => {
       />
       <Divider />
       <List>
-        {publication.map((product, i) => (
-          <ListItem divider={i < product.length - 1} key={product.id}>
-            <ListItemAvatar>
-              <img
-                alt="Product"
-                className={classes.image}
-                src={`http://localhost:3006/${product?.cover}`}
+        {publication.length !== 0 &&
+          publication.map((product, i) => (
+            <ListItem divider={i < product.length - 1} key={product.id}>
+              <ListItemAvatar>
+                <img
+                  alt="Product"
+                  className={classes.image}
+                  src={`http://localhost:3006/${product?.cover}`}
+                />
+              </ListItemAvatar>
+              <ListItemText
+                primary={truncateString(product.publicationTitle, 40)}
+                secondary={`Creado ${dayjs(product.create)
+                  .locale(es)
+                  .format("YYYY/MM/DD")}`}
               />
-            </ListItemAvatar>
-            <ListItemText
-              primary={truncateString(product.publicationTitle, 40)}
-              secondary={`Creado ${dayjs(product.create)
-                .locale(es)
-                .format("YYYY/MM/DD")}`}
-            />
-            <IconButton edge="end" size="small">
-              <MoreVertIcon />
-            </IconButton>
-          </ListItem>
-        ))}
+              <IconButton edge="end" size="small">
+                <MoreVertIcon />
+              </IconButton>
+            </ListItem>
+          ))}
       </List>
       <Divider />
       <Box display="flex" justifyContent="flex-end" p={2}>

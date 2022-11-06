@@ -55,32 +55,33 @@ const LatestOrders = ({ className, solicitudes, ...rest }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {solicitudes.map((order) => (
-                <TableRow hover key={order.idSolicitud}>
-                  <TableCell>{order.idSolicitud}</TableCell>
-                  <TableCell>{truncateString(order.mensaje, 40)}</TableCell>
-                  <TableCell>
-                    {moment(order.createDate).format("DD/MM/YYYY")}
-                  </TableCell>
-                  <TableCell>
-                    <Chip color="primary" label={order.estado} size="small" />
-                  </TableCell>
-                </TableRow>
-              ))}
+              {solicitudes.length !== 0 &&
+                solicitudes.map((order) => (
+                  <TableRow hover key={order.idSolicitud}>
+                    <TableCell>{order.idSolicitud}</TableCell>
+                    <TableCell>{truncateString(order.mensaje, 40)}</TableCell>
+                    <TableCell>
+                      {moment(order.createDate).format("DD/MM/YYYY")}
+                    </TableCell>
+                    <TableCell>
+                      <Chip color="primary" label={order.estado} size="small" />
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </Box>
       </PerfectScrollbar>
       <Box display="flex" justifyContent="flex-end" p={2}>
-        <Link to={"/app/solicitudes"} >
-        <Button
-          color="primary"
-          endIcon={<ArrowRightIcon />}
-          size="small"
-          variant="text"
-        >
-          Ver todas
-        </Button>
+        <Link to={"/app/solicitudes"}>
+          <Button
+            color="primary"
+            endIcon={<ArrowRightIcon />}
+            size="small"
+            variant="text"
+          >
+            Ver todas
+          </Button>
         </Link>
       </Box>
     </Card>

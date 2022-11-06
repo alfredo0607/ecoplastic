@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import {
   Grid,
   InputAdornment,
@@ -13,8 +13,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import ClearIcon from "@material-ui/icons/Clear";
 import SearchIcon from "@material-ui/icons/Search";
-import { fetchRequest, setRequestToken } from "../../helpers/fetchRequest";
-import { getUserToken } from "../../helpers/setGetToken";
 import NoRows from "../../components/NoRows";
 import PublicationCardAdmin from "./PublicationCardAdmin";
 
@@ -115,48 +113,6 @@ const PostCardList = (props) => {
       tituloPublicacion: "",
     }));
   };
-
-  const getTypes = async () => {
-    try {
-      const token = getUserToken();
-
-      setRequestToken(token);
-      const response = await fetchRequest(
-        `/publicaciones/list/obtener_tipos_publicacion`,
-        "GET",
-        {}
-      );
-
-      const { rows } = response.data.data;
-
-      setGetTypesPublications(rows);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getTags = async () => {
-    try {
-      const token = getUserToken();
-      setRequestToken(token);
-
-      const response = await fetchRequest(
-        `/publicaciones/list/obtener_etiquetas_publicacion`,
-        "GET",
-        {}
-      );
-
-      const { rows } = response.data.data;
-      setTagsPublications(rows);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  //   useEffect(() => {
-  //     getTypes();
-  //     getTags();
-  //   }, []);
 
   return (
     <>

@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
-import { convertToRaw, convertFromRaw, EditorState } from "draft-js";
-
+import { convertToRaw, EditorState } from "draft-js";
 import {
   Box,
   Button,
@@ -12,20 +11,14 @@ import {
   Slide,
   Grid,
   IconButton,
-  Collapse,
   Snackbar,
   Alert,
 } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
-//import { MUIEditorState } from 'react-mui-draft-wysiwyg';
-//import { Alert } from '@material-ui/lab';
 import CloseIcon from "@material-ui/icons/Close";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
-
-//VALIDATIONS
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-
 import LoadingScreen from "../../../components/ui/LoadingScreen";
 import AppbarDialogFullScreen from "../../../components/AppbarDialogFullScreen";
 import { getUserToken } from "../../../helpers/setGetToken";
@@ -122,67 +115,8 @@ function NuevaPublicacion(props) {
     }
   };
 
-  const getEditPublicationQuery = async () => {
-    setLoading(true);
-
-    try {
-      const token = getUserToken();
-
-      setRequestToken(token);
-
-      const response = await fetchRequest(
-        `/publicaciones/obtener_publicacion_editar/${props.formSettings.data.id}`,
-        "GET",
-        {}
-      );
-
-      const { row } = response.data.data;
-
-      const dataFormated = {
-        publicationTitle: row.titulo,
-        publishSwitch: !!row.publicar,
-        importantContainSwitch: !!row.esDestacado,
-        commentSwitch: !!row.comentariosActivos,
-        tags: row.etiquetas,
-        publicationType: {
-          publicationType: row.tipoPublicacion.nombreTipo,
-          id: row.tipoPublicacion.idTipoPublicacion,
-        },
-        areas: row.areasPublicacion.map((area) => ({
-          id: area.idArea,
-          title: area.nombreArea,
-        })),
-        videoAdd: row.videos.map((video) => ({
-          id: video.id,
-          name: video.urlVideo,
-        })),
-      };
-
-      setCoverImage(row.cover);
-      setAditionalFiles(row.archivosAdicionales);
-
-      setEditorState(
-        EditorState.createWithContent(convertFromRaw(row.contenido))
-      );
-
-      reset(dataFormated);
-    } catch (error) {
-      let msg = error.response?.data.errores
-        ? typeof error.response.data.errores === "string"
-          ? error.response.data.errores
-          : "Ocurrio un error inesperado, por favor intentalo de nuevo más tarde"
-        : "Ocurrio un error inesperado, por favor intentalo de nuevo más tarde";
-
-      setCustomErrors({ type: "error", message: msg });
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleSavePublication = async (data) => {
     setLoading(true);
-
-    console.log(data);
 
     const commentState = data.commentSwitch ? 1 : 0;
 
@@ -221,37 +155,20 @@ function NuevaPublicacion(props) {
         };
 
         setRequestToken(token);
-        const resp = await fetchRequest(
+
+        await fetchRequest(
           `/producto/nuevo_producto/${usuario.idUsuario}`,
           "POST",
           newPublication
         );
-
-        const row = resp.data.data.row;
-
-        const publicationFormatedWall = {
-          publishSwitch: row.estadoPublicacion,
-          date: dayjs(row.fechaCreacion)
-            .locale(es)
-            .format("DD [de] MMMM [de] YYYY"),
-          id: row.id,
-          idCreador: row.idCreador,
-          avatar: row.imagenCreador,
-          publicedBy: row.nombreCreador,
-          // comments: row.numeroComentarios,
-          comments: 0,
-          // rating: row.rating,
-          rating: 0,
-          categoria: row.categoria,
-          publicationTitle: row.titulo,
-        };
 
         setCustomErrors({
           type: "success",
           message: "La publicacion se ha realizado exitosamente",
         });
 
-        // props.addPublication(publicationFormatedWall);
+        props.getPublications();
+
         handleClose();
       } catch (error) {
         console.log(error);
@@ -334,12 +251,6 @@ function NuevaPublicacion(props) {
     }
   };
 
-  //   useEffect(() => {
-  //     if (props.formSettings.type === "edit") {
-  //       getEditPublicationQuery();
-  //     }
-  //   }, [props.formSettings.type]);
-
   return (
     <>
       {loading && <LoadingScreen />}
@@ -357,9 +268,6 @@ function NuevaPublicacion(props) {
         open={props.formSettings.open}
         TransitionComponent={Transition}
         PaperProps={{ className: classes.dialog }}
-        /* onEntered={
-        props.formSettings.type === "edit" ? getEditPublicationQuery : null
-      } */
       >
         <form onSubmit={handleSubmit(handleSavePublication)}>
           <AppbarDialogFullScreen

@@ -156,14 +156,10 @@ const Estadisticas = ({ type = "user" }) => {
               {/* <TrafficByDevice estadisticas={estadisticas} /> */}
             </Grid>
             <Grid item lg={4} md={6} xl={3} xs={12}>
-              {publication.length !== 0 && (
-                <LatestProducts publication={publication} />
-              )}
+              <LatestProducts publication={publication} />
             </Grid>
             <Grid item lg={8} md={12} xl={9} xs={12}>
-              {solicitudes.length !== 0 && (
-                <LatestOrders solicitudes={solicitudes} />
-              )}
+              <LatestOrders solicitudes={solicitudes} />
             </Grid>
           </Grid>
         </Container>

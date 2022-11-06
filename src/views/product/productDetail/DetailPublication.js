@@ -1,12 +1,10 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React from "react";
-import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import Carousel from "react-material-ui-carousel";
-import { Paper, Button } from "@mui/material";
+import { Paper } from "@mui/material";
 import {
   Stack,
-  Divider,
   Grid,
   CardMedia,
   Typography,
@@ -42,9 +40,6 @@ const DetailPublication = ({
   imagenes,
   comentarios,
 }) => {
-  const classes = useStyles();
-  const matches = useMediaQuery("(min-width:600px)");
-
   return (
     <Stack spacing={2}>
       <Grid textAlign="center">

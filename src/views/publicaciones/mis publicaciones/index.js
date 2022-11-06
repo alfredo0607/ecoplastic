@@ -116,6 +116,7 @@ const PublicacionesView = () => {
               addPublication={addPublication}
               formSettings={formSettings}
               updateFormSettings={setFormSettings}
+              getPublications={getPublications}
             />
           </Grid>
 

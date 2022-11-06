@@ -186,7 +186,6 @@ export default function TopBar() {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
   const {
-    user,
     business,
     user: { opciones },
   } = useSelector((state) => state.auth);

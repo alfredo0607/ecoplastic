@@ -62,6 +62,12 @@ const useStyles = makeStyles((theme) => ({
   buttonMargin: {
     marginRight: theme.spacing(1.5),
   },
+  titleText: {
+    color:
+      theme.palette.mode === "light"
+        ? "rgba(0, 0, 0, 0.7)"
+        : "rgba(255, 255, 255, 0.9)",
+  },
 }));
 
 const getPositionMessage = (params) => {
@@ -175,7 +181,6 @@ const ChatContainer = ({
   containerHeight = 550,
   configUseChat,
 }) => {
-  const [valueFieldMessage, setValueFieldMessage] = useState("");
   const classes = useStyles();
   const { mainContainer, header, content, footer } = customClasses || {};
 
@@ -202,8 +207,6 @@ const ChatContainer = ({
     url: "",
     title: "",
   });
-
-  const [openFormFiles, setOpenFormFiles] = useState(false);
 
   const handleCloseViewer = () => setOpenViewer(false);
 
@@ -253,7 +256,9 @@ const ChatContainer = ({
           [header]: customClasses?.header,
         })}
       >
-        <Typography variant="h4">Chat de la solicitud</Typography>
+        <Typography className={classes.titleText} variant="h4">
+          Chat de la solicitud
+        </Typography>
         {/* Aqui el header
         <IconButton size="small">
           <SendOutlinedIcon />

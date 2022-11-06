@@ -42,7 +42,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   image: {
-    backgroundImage: "url(/static/images/auth-background.jpg)",
+    backgroundImage:
+      "url(https://aiijci.stripocdn.email/content/guids/af010813-93ef-4d11-a072-30c5be9fc4f3/images/whatsapp_image_20221105_at_15427_pm.jpeg)",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
     backgroundSize: "cover",
@@ -73,7 +74,7 @@ const MainLayout = () => {
         <Grid item xs={12} sm={12} md={6} lg={5} className={classes.content}>
           <Box mb={3} ml={2} mt={2}>
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/600px-Facebook_f_logo_%282019%29.svg.png"
+              src="https://aiijci.stripocdn.email/content/guids/af010813-93ef-4d11-a072-30c5be9fc4f3/images/whatsapp_image_20221105_at_15427_pm.jpeg"
               alt="Logo de EcoPlastic"
               className={classes.logo}
             />
