@@ -102,7 +102,6 @@ function PostForm({
   handleCloseError,
 }) {
   const classes = useStyles();
-  const [error, setError] = useState(null);
   const matches = useMediaQuery("(min-width:600px)");
 
   /********************* TEXT EDITOR **********************/
@@ -115,7 +114,6 @@ function PostForm({
 
   const handleCloseCover = () => {
     setCoverImage(null);
-    console.log(coverImage);
   };
 
   const handleCloseFiles = () => {

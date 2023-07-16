@@ -146,6 +146,8 @@ const FileCard = ({
 
   const handleCloseMenu = () => setAnchorEl(null);
 
+  console.log(serverName);
+
   return (
     <>
       <div

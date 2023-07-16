@@ -1,9 +1,7 @@
 import "react-perfect-scrollbar/dist/css/styles.css";
 import "../mixins/chartjs";
-
 import React from "react";
 import { useSelector } from "react-redux";
-
 import {
   ThemeProvider,
   StyledEngineProvider,

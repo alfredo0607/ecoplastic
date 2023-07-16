@@ -64,7 +64,6 @@ const UserCard = ({ loadingData, userInfo, errorLoading }) => {
   const classes = useStyles();
   const navigate = useNavigate();
 
-  console.log(userInfo);
 
   const { user } = useSelector((state) => state.auth);
 

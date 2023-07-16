@@ -78,7 +78,7 @@ const LoginHomeForm = () => {
   return (
     <>
       {fetchingData && <LoadingForms />}
-
+    
       <Box mb={3}>
         <Typography color="textPrimary" variant="h2">
           Iniciar Sesión
